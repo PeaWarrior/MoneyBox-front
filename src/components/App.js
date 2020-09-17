@@ -1,9 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import './App.css';
-import NavigationBar from './components/NavigationBar';
-import Login from './components/Login';
-import Signup from './components/Signup';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import NavigationBar from './NavigationBar';
+import Login from './Login';
+import Signup from './Signup';
 
 function App() {
   return (

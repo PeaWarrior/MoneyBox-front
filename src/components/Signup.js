@@ -1,28 +1,52 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function Signup() {
-    const [state, setState] = useState({
-        username: "",
-        password: "",
-        password_confirmation: "",
-    })
+    const { username, password, password_confirmation } = useSelector(state => state.user);
+    const dispatch = useDispatch();
+
+    const handleChange = event => {
+        const action = {
+            type: 'SET_INPUT',
+            payload: {[event.target.name]: event.target.value}
+        }
+        dispatch(action);
+    }
     
     return (
         <div>
             <form>
                 <label>
                     Username
-                    <input type="text" name="username" value={state.username} />
+                    <input 
+                        onChange={handleChange} 
+                        value={username}
+                        autoComplete="username"
+                        type="text" 
+                        name="username" 
+                    />
                 </label>
                 <br/>
                 <label>
                     Password
-                    <input type="password" name="password" value={state.password} />
+                    <input 
+                        onChange={handleChange} 
+                        value={password} 
+                        autoComplete="new-password"
+                        type="password" 
+                        name="password" 
+                    />
                 </label>
                 <br/>
                 <label>
                     Confirm Password
-                    <input type="password" name="password_confirmation" value={state.password_confirmation} />
+                    <input 
+                        onChange={handleChange} 
+                        value={password_confirmation} 
+                        autoComplete="new-password" 
+                        type="password" 
+                        name="password_confirmation" 
+                    />
                 </label>
                 <br/>
                 <button type="submit">Signup</button>
