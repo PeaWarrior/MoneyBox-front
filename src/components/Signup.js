@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { signupUser } from '../store/userActions'
+import { signup } from '../store/userActions'
 
 export default function Signup() {
     const { username, password, password_confirmation } = useSelector(state => state.user.form);
@@ -16,7 +16,7 @@ export default function Signup() {
 
     const handleSubmit = event => {
         event.preventDefault();
-        dispatch(signupUser());
+        dispatch(signup());
     }
     
     return (

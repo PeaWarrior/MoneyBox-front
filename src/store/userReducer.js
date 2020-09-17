@@ -26,15 +26,15 @@ const reducer = (state = defaultState, action) => {
                     password_confirmation: ''
                 }
             }
+        case 'LOGIN':
+            return {
+                ...state,
+                currentUser: action.payload
+            }
         case 'LOGOUT':
             return {
                 ...state,
-                currentUser: null,
-                form: {
-                    username: '',
-                    password: '',
-                    password_confirmation: ''
-                }
+                currentUser: null
             }
         default:
             return state;

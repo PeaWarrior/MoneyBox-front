@@ -1,6 +1,6 @@
 import store from '.';
 
-export const signupUser = () => {
+export const signup = () => {
     return function(dispatch) {
         fetch('http://localhost:3001/signup', {
             method: 'POST',
@@ -12,18 +12,16 @@ export const signupUser = () => {
         .then(resp => resp.json())
         .then(data => {
             if (data.user) {
-                const action = {
-                    type: 'CLEAR_FORM'
-                }
-                dispatch(action);
+                dispatch(logInUser(data));
             } else {
-                console.log(data.error)
+                console.log(data.error);
             }
+            dispatch(clearForm());
         })
     }
 };
 
-export const loginUser = () => {
+export const login = () => {
     return function(dispatch) {
         fetch('http://localhost:3001/login', {
             method: 'POST',
@@ -35,13 +33,11 @@ export const loginUser = () => {
         .then(resp => resp.json())
         .then(data => {
             if (data.user) {
-                const action = {
-                    type: 'CLEAR_FORM'
-                }
-                dispatch(action);
+                dispatch(logInUser(data));
             } else {
                 console.log(data.error)
             }
+            dispatch(clearForm());
         })
     }
 };
@@ -57,10 +53,7 @@ export const autologin = () => {
         .then(resp => resp.json())
         .then(data => {
             if (data.user) {
-                const action = {
-                    type: 'CLEAR_FORM'
-                }
-                dispatch(action);
+                dispatch(logInUser(data));
             } else {
                 console.log(data.error)
             }
@@ -70,10 +63,28 @@ export const autologin = () => {
 
 export const logout = () => {
     return function(dispatch) {
-        const action = {
-            type: 'LOGOUT'
-        };
         localStorage.clear();
-        dispatch(action);
+        dispatch(logOutUser());
     }
 }
+
+// UTILITY
+
+const clearForm = () => {
+    return {
+        type: 'CLEAR_FORM'
+    }
+};
+
+const logInUser = (data) => {
+    return {
+        type: 'LOGIN',
+        payload: data.user
+    }
+};
+
+const logOutUser = () => {
+    return {
+        type: 'LOGOUT'
+    }
+};
