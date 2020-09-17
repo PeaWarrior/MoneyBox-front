@@ -1,27 +1,30 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import NavigationBar from './NavigationBar';
 import Login from './Login';
 import Signup from './Signup';
+import PortfolioListings from './portfolio/PortfolioListings';
 import { autologin } from '../store/userActions';
 
 function App() {
   const dispatch = useDispatch();
+  const { currentUser } = useSelector(state => state.user)
 
   useEffect(() => {
     if (localStorage.token) {
       dispatch(autologin());
     }
-  }, [])
+  }, [dispatch])
 
   return (
     <Router>
       <NavigationBar />
 
       <Switch>
-        <Route exact path="/login"> <Login /></Route>
-        <Route exact path="/signup"><Signup /></Route>
+        <Route exact path="/login">{ currentUser ? <Redirect to='/portfolios'/> : <Login /> }</Route>
+        <Route exact path="/signup">{ currentUser ? <Redirect to='/portfolios'/> : <Signup /> }</Route>
+        <Route exact path="/portfolios">{ currentUser ? <PortfolioListings /> : <Redirect to='/login'/> }</Route>
       </Switch>
 
     </Router>

@@ -12,6 +12,7 @@ export const signup = () => {
         .then(resp => resp.json())
         .then(data => {
             if (data.user) {
+                localStorage.token = data.token;
                 dispatch(logInUser(data));
             } else {
                 console.log(data.error);
@@ -33,6 +34,7 @@ export const login = () => {
         .then(resp => resp.json())
         .then(data => {
             if (data.user) {
+                localStorage.token = data.token;
                 dispatch(logInUser(data));
             } else {
                 console.log(data.error)

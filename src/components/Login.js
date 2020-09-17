@@ -44,7 +44,7 @@ export default function Signup() {
                     />
                 </label>
                 <br/>
-                <button type="submit">Signup</button>
+                <button type="submit">Login</button>
             </form>
         </div>
     );
