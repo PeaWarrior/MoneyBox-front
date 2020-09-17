@@ -1,8 +1,10 @@
 const defaultState = {
-    username: '',
-    password: '',
-    password_confirmation: '',
     currentUser: null,
+    form: {
+        username: '',
+        password: '',
+        password_confirmation: '',
+    }
 };
 
 const reducer = (state = defaultState, action) => {
@@ -10,14 +12,29 @@ const reducer = (state = defaultState, action) => {
         case 'SET_INPUT':
             return {
                 ...state,
-                ...action.payload
+                form: {
+                    ...state.form,
+                    ...action.payload
+                }
             }
         case 'CLEAR_FORM':
             return {
                 ...state,
-                username: '',
-                password: '',
-                password_confirmation: ''
+                form: {
+                    username: '',
+                    password: '',
+                    password_confirmation: ''
+                }
+            }
+        case 'LOGOUT':
+            return {
+                ...state,
+                currentUser: null,
+                form: {
+                    username: '',
+                    password: '',
+                    password_confirmation: ''
+                }
             }
         default:
             return state;
