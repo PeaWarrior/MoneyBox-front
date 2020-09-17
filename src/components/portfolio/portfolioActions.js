@@ -1,4 +1,4 @@
-import { createNewPortfolioRequest, getPortfoliosRequest } from '../api';
+import { createNewPortfolioRequest, getPortfoliosRequest } from '../../api';
 
 export const createNewPortfolio = (newPortfolioName) => {
     return function(dispatch) {

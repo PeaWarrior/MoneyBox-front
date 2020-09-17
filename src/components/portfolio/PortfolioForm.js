@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
-import { createNewPortfolio, setNewPortfolioFormName } from '../../store/portfolioActions';
+import { createNewPortfolio, setNewPortfolioFormName } from './portfolioActions';
 
 
 export default function PortfolioForm() {

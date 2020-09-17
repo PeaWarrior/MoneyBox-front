@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PortfolioForm from './PortfolioForm';
 import PortfolioCard from './PortfolioCard';
-import { fetchPortfolios } from '../../store/portfolioActions';
+import { fetchPortfolios } from './portfolioActions';
 
 export default function PortfolioListings() {
     const dispatch = useDispatch();

@@ -31,6 +31,14 @@ const reducer = (state = defaultState, action) => {
                     ...action.payload
                 ]
             }
+        case 'SET_FUND_PORTFOLIO_AMOUNT':
+            return {
+                ...state,
+                portfolios: [
+                    ...state.portfolios,
+                    ...action.payload
+                ]
+            }
         default:
             return state;
     }

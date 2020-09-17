@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { login } from '../store/userActions';
+import { signup } from './userActions'
 
 export default function Signup() {
-    const { username, password } = useSelector(state => state.user.form);
+    const { username, password, password_confirmation } = useSelector(state => state.user.form);
     const dispatch = useDispatch();
 
     const handleChange = event => {
@@ -16,7 +16,7 @@ export default function Signup() {
 
     const handleSubmit = event => {
         event.preventDefault();
-        dispatch(login());
+        dispatch(signup());
     }
     
     return (
@@ -44,7 +44,18 @@ export default function Signup() {
                     />
                 </label>
                 <br/>
-                <button type="submit">Login</button>
+                <label>
+                    Confirm Password
+                    <input 
+                        onChange={handleChange} 
+                        value={password_confirmation} 
+                        autoComplete="new-password" 
+                        type="password" 
+                        name="password_confirmation" 
+                    />
+                </label>
+                <br/>
+                <button type="submit">Signup</button>
             </form>
         </div>
     );
