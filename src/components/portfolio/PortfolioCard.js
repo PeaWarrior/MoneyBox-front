@@ -1,12 +1,28 @@
 import React from 'react';
-import TransactionFundForm from '../transaction/TransactionFundForm'
+import { useHistory, useLocation } from 'react-router-dom';
 
-export default function PortfolioCard({ id, name }) {
-    
+export default function PortfolioCard(props) {
+    const history = useHistory();
+    const location = useLocation();
+    const { id, name, cash, costBasis, totalFunds, realized } = props
+
+    const handleClick = event => {
+        history.push({
+            pathname: '/portfolio',
+            state: { portfolioId: id }
+        })
+    };
+
     return (
-        <div>
+        <div className="box">
             <h1>{name}</h1>
-            <TransactionFundForm name={name} portfolio_id={id} />
+            <div>
+                <span>Original Investment: ${totalFunds}</span>
+                <span>Cash: ${cash}</span>
+                <span>Total Cost Basis: ${costBasis}</span>
+                <span>Total Realized Gains/Losses: ${realized}</span>
+            </div>
+            {location.pathname === '/portfolios' ? <button onClick={handleClick} >View Portfolio</button> : null}
         </div>
     )
 }

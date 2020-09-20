@@ -1,29 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import moment from 'moment';
 import { Modal, Button } from 'react-bootstrap';
-import { createAndFetchNewTransaction, setTransactionInput } from './transactionActions';
+import { createAndFetchNewActivity, setActivityInput } from './activityActions';
 
-
-export default function TransactionFundForm({name, portfolio_id}) {
+export default function ActivityFundForm({name, portfolio_id, portfolioIndex}) {
     const dispatch = useDispatch();
-    const { price, date } = useSelector(state => state.transaction.form);
     const [show, setShow] = useState(false);
+    const [form, setForm] = useState({
+        portfolio_id: portfolio_id,
+        category: 'fund',
+        price: 0,
+        date: moment().format('YYYY-MM-DD')
+    });
 
-    useEffect(() => {
-        dispatch(setTransactionInput({portfolio_id: portfolio_id}))
-        dispatch(setTransactionInput({category: 'fund'}))
-    }, [])
-    
     const handleClose = () => setShow(false);
+
     const handleShow = () => setShow(true);
 
     const handleChange = event => {
-        dispatch(setTransactionInput({[event.target.name]: event.target.value}));
+        event.persist();
+        setForm(prevForm => ({
+            ...prevForm,
+            [event.target.name]: event.target.value
+        }));
     };
 
     const handleSubmit = event => {
         event.preventDefault();
-        dispatch(createAndFetchNewTransaction());
+        dispatch(createAndFetchNewActivity(form, portfolioIndex));
         handleClose();
     }
       
@@ -46,7 +51,7 @@ export default function TransactionFundForm({name, portfolio_id}) {
                             onChange={handleChange} 
                             type="date" 
                             name="date" 
-                            value={date}
+                            value={form.date}
                         />
                     </label>
                     <label>
@@ -56,7 +61,7 @@ export default function TransactionFundForm({name, portfolio_id}) {
                             onChange={handleChange} 
                             type="number" 
                             name="price" 
-                            value={price}
+                            value={form.price}
                         />
                     </label>
                     <Modal.Footer>

@@ -1,8 +1,6 @@
 const defaultState = {
     portfolios: [],
-    form: {
-        name: ''
-    }
+    currentPortfolio: {},
 };
 
 const reducer = (state = defaultState, action) => {
@@ -15,14 +13,6 @@ const reducer = (state = defaultState, action) => {
                     action.payload
                 ]
             }
-        case 'SET_NEW_PORTFOLIO_FORM_NAME':
-            return {
-                ...state,
-                form: {
-                    ...state.form,
-                    name: action.payload
-                }
-            }
         case 'SET_PORTFOLIOS':
             return {
                 ...state,
@@ -31,13 +21,10 @@ const reducer = (state = defaultState, action) => {
                     ...action.payload
                 ]
             }
-        case 'SET_FUND_PORTFOLIO_AMOUNT':
+        case 'SET_CURRENT_PORTFOLIO':
             return {
                 ...state,
-                portfolios: [
-                    ...state.portfolios,
-                    ...action.payload
-                ]
+                currentPortfolio: action.payload
             }
         default:
             return state;

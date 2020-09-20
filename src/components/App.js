@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import './App.css';
 import NavigationBar from './NavigationBar';
 import Login from './user/Login';
 import Signup from './user/Signup';
 import PortfolioListings from './portfolio/PortfolioListings';
+import PortfolioPage from './portfolio/PortfolioPage';
 import { autologin } from './user/userActions';
 
 function App() {
@@ -30,6 +32,9 @@ function App() {
         </Route>
         <Route exact path="/portfolios">
           { currentUser ? <PortfolioListings /> : <Redirect to='/login'/> }
+        </Route>
+        <Route exact path="/portfolio">
+          { currentUser ? <PortfolioPage /> : <Redirect to='/login'/> }
         </Route>
       </Switch>
 

@@ -2,12 +2,14 @@ import { combineReducers, createStore, applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
 import userReducer from '../components/user/userReducer';
 import portfolioReducer from '../components/portfolio/portfolioReducer';
-import transactionReducer from '../components/transaction/transactionReducer';
+import activityReducer from '../components/activity/activityReducer';
+import stockReducer from '../components/stock/stockReducer';
 
 const rootReducer = combineReducers({
     user: userReducer,
     portfolio: portfolioReducer,
-    transaction: transactionReducer
+    stock: stockReducer,
+    activity: activityReducer
 })
 
 const store = createStore(

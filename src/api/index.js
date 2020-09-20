@@ -14,6 +14,16 @@ export const createNewPortfolioRequest = (newPortfolioName) => {
     .then(resp => resp.json());
 };
 
+export const getPortfolioRequest = (id) => {
+    return fetch(`${URL}portfolios/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(resp => resp.json());
+};
+
 export const getPortfoliosRequest = () => {
     return fetch(`${URL}portfolios`, {
         headers: {
@@ -24,16 +34,16 @@ export const getPortfoliosRequest = () => {
     .then(resp => resp.json());
 };
 
-// TRANSACTION REQUESTS
+// ACTIVITY REQUESTS
 
-export const createNewTransactionRequest = (transactionFormData) => {
-    return fetch(`${URL}transactions`, {
+export const createNewActivityRequest = (activityFormData) => {
+    return fetch(`${URL}activities`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${localStorage.token}`,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(transactionFormData)
+        body: JSON.stringify(activityFormData)
     })
     .then(resp => resp.json())
 }

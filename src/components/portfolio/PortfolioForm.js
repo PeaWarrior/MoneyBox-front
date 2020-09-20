@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
-import { createNewPortfolio, setNewPortfolioFormName } from './portfolioActions';
+import { createNewPortfolio } from './portfolioActions';
 
 
 export default function PortfolioForm() {
     const dispatch = useDispatch();
-    const { name } = useSelector(state => state.portfolio.form);
+    const [name, setName] = useState('')
     const [show, setShow] = useState(false);
     
     const handleClose = () => setShow(false);
@@ -19,7 +19,7 @@ export default function PortfolioForm() {
     };
 
     const handleChange = event => {
-        dispatch(setNewPortfolioFormName(event.target.value));
+        setName(event.target.value);
     }
       
     return (
