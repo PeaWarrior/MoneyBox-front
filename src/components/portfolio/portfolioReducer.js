@@ -26,6 +26,11 @@ const reducer = (state = defaultState, action) => {
                 ...state,
                 currentPortfolio: action.payload
             }
+        case 'CLEAR_PORTFOLIOS':
+            return {
+                portfolios: [],
+                currentPortfolio: {},
+            }
         default:
             return state;
     }

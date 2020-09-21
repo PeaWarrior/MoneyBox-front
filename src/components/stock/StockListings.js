@@ -25,19 +25,20 @@ export default function StockListings() {
                         [message.data[0].s]: message.data[0].p
                     }))
                 }
-                // console.log(message.data[0].p);
+                // console.log(message.data[0]);
             });
 
             return () => {
-                stocks.forEach(stock => {
-                    socket.send(JSON.stringify({'type':'unsubscribe', 'symbol': stock.ticker}))
-                })
+                socket.close();
+                // stocks.forEach(stock => {
+                //     socket.send(JSON.stringify({'type':'unsubscribe', 'symbol': stock.ticker}))
+                // })
             }
         }
     }, [stocks]);
 
     const renderStocks = () => {
-        return stocks.map(stock => <StockCard key={stock.id} {...stock} />)
+        return stocks.map(stock => <StockCard key={stock.id} lastTrade={lastTrade[stock.ticker]} {...stock} />)
     }
 
     return (

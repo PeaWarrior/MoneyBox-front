@@ -11,7 +11,10 @@ export const createNewPortfolio = (newPortfolioName) => {
 export const fetchPortfolios = () => {
     return function(dispatch) {
         getPortfoliosRequest()
-        .then(data => dispatch(setPortfolios(data)));
+        .then(data => {
+            dispatch(clearPortfolios())
+            dispatch(setPortfolios(data))
+        });
     }
 };
 
@@ -39,12 +42,19 @@ export const setPortfolios = (portfolios) => {
     return {
         type: 'SET_PORTFOLIOS',
         payload: portfolios
-    }
-}
+    };
+};
 
 export const setCurrentPortfolio = (portfolio) => {
     return {
         type: 'SET_CURRENT_PORTFOLIO',
         payload: portfolio
-    }
-}
+    };
+};
+
+export const clearPortfolios = () => {
+    return {
+        type: 'CLEAR_PORTFOLIOS'
+    };
+};
+
