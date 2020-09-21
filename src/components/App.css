@@ -5,3 +5,7 @@ nav {
 .box {
     border: 1px solid black
 }
+
+.stockName {
+    margin: 0
+}

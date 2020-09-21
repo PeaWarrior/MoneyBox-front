@@ -13,7 +13,9 @@ export default function StockListings() {
 
             socket.addEventListener('open', function (event) {
                 stocks.forEach(stock => {
-                    socket.send(JSON.stringify({'type':'subscribe', 'symbol': stock.ticker}))
+                    if (stock.shares > 0) {
+                        socket.send(JSON.stringify({'type':'subscribe', 'symbol': stock.ticker}))
+                    }
                 })
             });
 
