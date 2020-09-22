@@ -12,7 +12,6 @@ export default function StockCard({ id, name, ticker, shares, costBasis, average
 
     return (
         <Accordion>
-
             <Card>
                 <Card.Header className="d-flex justify-content-between">
                     <Container>
@@ -33,7 +32,7 @@ export default function StockCard({ id, name, ticker, shares, costBasis, average
                             <Col>
                                 <small>Total Return</small>
                                 <h6>${lastTrade ? 
-                                    `${(lastTrade-average_price).toFixed(2)} (${(((lastTrade/average_price)-1)*100).toFixed(2)}%)`
+                                    `${((lastTrade-average_price)*shares).toFixed(2)} (${(((lastTrade/average_price)-1)*100).toFixed(2)}%)`
                                     : 
                                     null}
                                 </h6>
@@ -60,11 +59,13 @@ export default function StockCard({ id, name, ticker, shares, costBasis, average
                         Transactions
                     </Accordion.Toggle>
                 </Card.Header>
+
                 <Accordion.Collapse eventKey="0">
                     <Card.Body>
                         {renderTransactions()}
                     </Card.Body>
                 </Accordion.Collapse>
+                
             </Card>
         </Accordion>
 

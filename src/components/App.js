@@ -7,6 +7,7 @@ import Login from './user/Login';
 import Signup from './user/Signup';
 import PortfolioListings from './portfolio/PortfolioListings';
 import PortfolioPage from './portfolio/PortfolioPage';
+import StockPage from './stock/StockPage';
 import { autologin } from './user/userActions';
 
 function App() {
@@ -25,16 +26,19 @@ function App() {
 
       <Switch>
         <Route exact path="/login">
-          { currentUser ? <Redirect to='/portfolios'/> : <Login /> }
+          { currentUser ? <Redirect to='/'/> : <Login /> }
         </Route>
         <Route exact path="/signup">
-          { currentUser ? <Redirect to='/portfolios'/> : <Signup /> }
+          { currentUser ? <Redirect to='/'/> : <Signup /> }
         </Route>
-        <Route exact path="/portfolios">
+        <Route exact path="/">
           { currentUser ? <PortfolioListings /> : <Redirect to='/login'/> }
         </Route>
         <Route exact path="/portfolio">
           { currentUser ? <PortfolioPage /> : <Redirect to='/login'/> }
+        </Route>
+        <Route exact path="/search">
+          { currentUser ? <StockPage /> : <Redirect to='/login'/> }
         </Route>
       </Switch>
 

@@ -32,9 +32,6 @@ export default function StockListings() {
 
             return () => {
                 socket.close();
-                // stocks.forEach(stock => {
-                //     socket.send(JSON.stringify({'type':'unsubscribe', 'symbol': stock.ticker}))
-                // })
             }
         }
     }, [stocks]);

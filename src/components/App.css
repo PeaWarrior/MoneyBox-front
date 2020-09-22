@@ -2,10 +2,22 @@ nav {
     border: 1px solid orange;
 }
 
+.logo {
+    width: 75px;
+}
+
 .box {
     border: 1px solid black
 }
 
 .stockName {
     margin: 0
+}
+
+.news-image {
+    width: 250px;
+}
+
+.date {
+    margin-bottom: 1rem;
 }

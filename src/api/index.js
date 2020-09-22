@@ -1,4 +1,5 @@
-const URL = 'http://localhost:3001/'
+const URL = 'http://localhost:3001/';
+const FINNHUB_URL = 'https://finnhub.io/api/v1/company-news';
 
 // PORTFOLIO REQUESTS
 
@@ -46,4 +47,26 @@ export const createNewActivityRequest = (activityFormData) => {
         body: JSON.stringify(activityFormData)
     })
     .then(resp => resp.json())
-}
+};
+
+// STOCK REQUESTS
+
+export const getStockDataRequest = (query) => {
+    return fetch(`${URL}stocks/${query}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(resp => resp.json())
+};
+
+export const getStockNewsRequest = (query) => {
+    return fetch(`${URL}stocks/${query}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(resp => resp.json())
+};

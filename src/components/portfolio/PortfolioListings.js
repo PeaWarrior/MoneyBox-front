@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Container } from 'react-bootstrap';
 import PortfolioForm from './PortfolioForm';
 import PortfolioCard from './PortfolioCard';
 import { fetchPortfolios } from './portfolioActions';
@@ -19,9 +20,9 @@ export default function PortfolioListings() {
     }
 
     return (
-        <div>
+        <Container>
             <PortfolioForm />
             {renderPortfolios()}
-        </div>
+        </Container>
     )
 }

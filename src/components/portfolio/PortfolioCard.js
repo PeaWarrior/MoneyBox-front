@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { Card, Container, Row, Col } from 'react-bootstrap';
 
 export default function PortfolioCard(props) {
     const history = useHistory();
@@ -14,15 +15,35 @@ export default function PortfolioCard(props) {
     };
 
     return (
-        <div className="box">
-            <h1>{name}</h1>
-            <div>
-                <span>Original Investment: ${totalFunds}</span>
-                <span>Cash: ${cash}</span>
-                <span>Total Cost Basis: ${costBasis}</span>
-                <span>Total Realized Gains/Losses: ${realized}</span>
-            </div>
-            {location.pathname === '/portfolios' ? <button onClick={handleClick} >View Portfolio</button> : null}
-        </div>
+        <Card>
+            <Container>
+                <Row>
+                    <Col>
+                        <h1 className="stockName">{name}</h1>
+                    </Col>
+                    <Col>
+                        <small>Original Investment</small>
+                        <h6>${totalFunds}</h6>
+                    </Col>
+                    <Col>
+                        <small>Realized Gains/Losses</small>
+                        <h6>${realized ? realized.toFixed(2) : null}</h6>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        {location.pathname === '/' ? <button onClick={handleClick} >View Portfolio</button> : null}
+                    </Col>
+                    <Col>
+                        <small>Cash Available</small>
+                        <h6>${cash}</h6>
+                    </Col>
+                    <Col>
+                        <small>Total Cost Basis</small>
+                        <h6>${costBasis}</h6>
+                    </Col>
+                </Row>
+            </Container>
+        </Card>
     )
 }
