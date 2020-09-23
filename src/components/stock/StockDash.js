@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Container, Row, Col } from 'react-bootstrap';
 import { calculateChange } from './stockActions';
+import ActivityForm from '../activity/ActivityForm';
 
 export default function StockDash({ name, ticker, lastTrade, fundamental }) {
     const dispatch = useDispatch();
@@ -10,13 +11,17 @@ export default function StockDash({ name, ticker, lastTrade, fundamental }) {
 
     useEffect(() => {
         if (lastTrade) {
-            setCurrentPrice(lastTrade)
+            setCurrentPrice(lastTrade.toFixed(2));
         }
     }, [lastTrade]);
 
     useEffect(() => {
         setCurrentChange(dispatch(calculateChange(currentPrice, fundamental.openPrice)));
     }, [currentPrice, dispatch, fundamental.openPrice]);
+
+    const handleClick = event => {
+        // dispatch();
+    };
 
     return (
         <Container>
@@ -39,6 +44,12 @@ export default function StockDash({ name, ticker, lastTrade, fundamental }) {
                 </Col>
                 <Col>
                     INSERT GRAPH HERE?
+                </Col>
+            </Row>
+            <Row>
+                <Col></Col>
+                <Col>
+                    <ActivityForm category={'Buy'} currentPrice={currentPrice} name={name} ticker={ticker} />
                 </Col>
             </Row>
         </Container>

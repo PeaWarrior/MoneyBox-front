@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { Container, Navbar, Nav, Button } from 'react-bootstrap';
 import logo from '../logo.png';
 import { logout } from './user/userActions';
 
@@ -18,19 +19,37 @@ export default function NavigationBar() {
     }
 
     return (
-        <nav>
-            <img src={logo} alt="logo" className="logo" />
-            {currentUser ? 
+        <Navbar>
+            <Container>
+            <Navbar.Brand href="/">
+                <img
+                    src={logo}
+                    className="logo"
+                    alt="MoneyBox logo"
+                />
+            </Navbar.Brand>
+            <Nav className="mr-auto">
+                {currentUser ? 
                 <>
-                <NavLink to="/search">Search</NavLink>
-                <button onClick={handleClickLogOut} >Logout</button>
+                <NavLink to="/" className="nav-link">Portfolios</NavLink>
+                <NavLink to="/search" className="nav-link">Search</NavLink>
                 </>
                 :
-                <>
-                <NavLink to="/login">Login</NavLink>
-                <NavLink to="/signup">Signup</NavLink>
-                </>
+                <></>
+                }
+            </Nav>
+
+            {currentUser ? 
+                <Nav className="ml-auto">
+                    <Button onClick={handleClickLogOut} >Logout</Button>
+                </Nav>
+                :
+                <Nav className="ml-auto">
+                    <NavLink to="/login" className="nav-link"><Button>Login</Button></NavLink>
+                    <NavLink to="/signup" className="nav-link"><Button>Signup</Button></NavLink>
+                </Nav>
             }
-        </nav>
+            </Container>
+        </Navbar>
     )
 }

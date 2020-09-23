@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 
-export default function ActivityCard ({ id, category, price, shares, date }) {
+export default function ActivityCard ({ id, ticker, category, price, shares, date }) {
     
     return (
         <Card>
@@ -9,7 +9,7 @@ export default function ActivityCard ({ id, category, price, shares, date }) {
 
             <Row>
                 <Col>
-                    <h6>{category.toUpperCase()}</h6>
+                    <h6>{ticker}: {category}</h6>
                     <small>{date}</small>
                 </Col>
                 <Col>
@@ -18,11 +18,11 @@ export default function ActivityCard ({ id, category, price, shares, date }) {
                 </Col>
                 <Col>
                     <small>Average Price</small>
-                    <h6>${(price/shares).toFixed(2)}</h6>
+                    <h6>${(price).toFixed(2)}</h6>
                 </Col>
                 <Col>
                     <small>Total</small>
-                    <h6>{category === 'buy' ? '+' : '-'}${price.toFixed(2)}</h6>
+                    <h6>${(price * shares).toFixed(2)}</h6>
                 </Col>
             </Row>
             </Card.Header>

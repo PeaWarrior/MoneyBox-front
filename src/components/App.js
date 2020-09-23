@@ -31,14 +31,14 @@ function App() {
         <Route exact path="/signup">
           { currentUser ? <Redirect to='/'/> : <Signup /> }
         </Route>
-        <Route exact path="/">
-          { currentUser ? <PortfolioListings /> : <Redirect to='/login'/> }
-        </Route>
         <Route exact path="/portfolio">
           { currentUser ? <PortfolioPage /> : <Redirect to='/login'/> }
         </Route>
         <Route exact path="/search">
           { currentUser ? <StockPage /> : <Redirect to='/login'/> }
+        </Route>
+        <Route exact path="/">
+          { currentUser ? <PortfolioListings /> : <Redirect to='/login'/> }
         </Route>
       </Switch>
 

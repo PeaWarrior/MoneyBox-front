@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPortfolio } from './portfolioActions';
-import { Container } from 'react-bootstrap';
+import { Container, Card } from 'react-bootstrap';
 import PortfolioCard from './PortfolioCard';
 import StockListings from '../stock/StockListings';
 
@@ -16,9 +16,11 @@ export default function PortfolioPage() {
     }, [location.state.portfolioId, dispatch]);
 
     return (
-        <Container className="box" >
-            <PortfolioCard {...state} />
-            <StockListings />
+        <Container className="mt-5">
+            <Card>
+                <PortfolioCard {...state} />
+                <StockListings />
+            </Card>
         </Container>
     )
 }

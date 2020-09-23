@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Card, Container, Row, Col } from 'react-bootstrap';
+import { Card, Row, Col, Button } from 'react-bootstrap';
 
 export default function PortfolioCard(props) {
     const history = useHistory();
@@ -15,8 +15,7 @@ export default function PortfolioCard(props) {
     };
 
     return (
-        <Card>
-            <Container>
+            <Card.Header>
                 <Row>
                     <Col>
                         <h1 className="stockName">{name}</h1>
@@ -27,12 +26,12 @@ export default function PortfolioCard(props) {
                     </Col>
                     <Col>
                         <small>Realized Gains/Losses</small>
-                        <h6>${realized ? realized.toFixed(2) : 0}</h6>
+                        <h6>${realized}</h6>
                     </Col>
+                    <Col></Col>
                 </Row>
                 <Row>
                     <Col>
-                        {location.pathname === '/' ? <button onClick={handleClick} >View Portfolio</button> : null}
                     </Col>
                     <Col>
                         <small>Cash Available</small>
@@ -42,8 +41,10 @@ export default function PortfolioCard(props) {
                         <small>Total Cost Basis</small>
                         <h6>${costBasis}</h6>
                     </Col>
+                    <Col>
+                        {location.pathname === '/' ? <Button onClick={handleClick} >View Portfolio</Button> : null}
+                    </Col>
                 </Row>
-            </Container>
-        </Card>
+            </Card.Header>
     )
 }

@@ -17,7 +17,6 @@ const reducer = (state = defaultState, action) => {
                 stock: {...action.payload}
             }
         case 'SET_QUOTES':
-            console.log(action.payload)
             return {
                 ...state,
                 quotes: {...action.payload}

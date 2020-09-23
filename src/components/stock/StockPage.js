@@ -5,6 +5,7 @@ import StockSearch from './StockSearch';
 import StockDash from './StockDash';
 import StockFundamental from './StockFundamental';
 import StockNewsListings from './StockNewsListings';
+// import ActivityListings from '../activity/ActivityListings';
 
 export default function StockPage() {
     const stock = useSelector(state => state.stock.stock);
@@ -38,22 +39,11 @@ export default function StockPage() {
             <br/>
             <Card>
                 <Card.Header>
-                    {stock.ticker ? 
-                        <StockDash {...stock} lastTrade={lastTrade} /> 
-                        : 
-                        null
-                    }
+                    {stock.ticker ? <StockDash {...stock} lastTrade={lastTrade} /> : null}
                 </Card.Header>
-                {stock.ticker ? 
-                    <StockFundamental /> 
-                    : 
-                    null
-                }
-                {stock.ticker ? 
-                    <StockNewsListings news={stock.news} /> 
-                    : 
-                    null
-                }
+                {/* {stock.ticker ? <ActivityListings /> : null} */}
+                {stock.ticker ? <StockFundamental /> : null}
+                {stock.ticker ? <StockNewsListings news={stock.news} /> : null}
             </Card>
         </Container>
     )
