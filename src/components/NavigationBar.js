@@ -20,7 +20,6 @@ export default function NavigationBar() {
     return (
         <nav>
             <img src={logo} alt="logo" className="logo" />
-            <logo></logo>
             {currentUser ? 
                 <>
                 <NavLink to="/search">Search</NavLink>

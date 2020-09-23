@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Container, Col, Row } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 
 export default function ActivityCard ({ id, category, price, shares, date }) {
     

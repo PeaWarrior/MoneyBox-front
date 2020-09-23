@@ -24,11 +24,11 @@ export default function StockCard({ id, name, ticker, shares, costBasis, average
 
     useEffect(() => {
         setCurrentChange(dispatch(calculateChange(currentPrice, average_price, shares)));
-    }, [currentPrice]);
+    }, [currentPrice, dispatch, average_price, shares]);
 
     useEffect(() => {
         setCurrentStockPrice(dispatch(calculateChange(currentPrice, openPrice)));
-    }, [currentPrice]);
+    }, [currentPrice, dispatch, openPrice]);
 
     const renderTransactions = () => {
         return activities.map(activity => (

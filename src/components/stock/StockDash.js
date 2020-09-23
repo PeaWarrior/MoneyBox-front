@@ -16,7 +16,7 @@ export default function StockDash({ name, ticker, lastTrade, fundamental }) {
 
     useEffect(() => {
         setCurrentChange(dispatch(calculateChange(currentPrice, fundamental.openPrice)));
-    }, [currentPrice]);
+    }, [currentPrice, dispatch, fundamental.openPrice]);
 
     return (
         <Container>

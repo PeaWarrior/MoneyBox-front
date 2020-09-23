@@ -14,7 +14,7 @@ export default function StockListings() {
             const queries = stocks.map(stock => stock.ticker.toUpperCase());
             dispatch(fetchStockQuotes(queries.join()))
         }
-    }, [stocks])
+    }, [stocks, dispatch])
 
     useEffect(() => {
         if (stocks.length > 0) {

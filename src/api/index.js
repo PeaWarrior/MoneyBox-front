@@ -1,5 +1,4 @@
 const URL = 'http://localhost:3001/';
-const FINNHUB_URL = 'https://finnhub.io/api/v1/company-news';
 
 // PORTFOLIO REQUESTS
 

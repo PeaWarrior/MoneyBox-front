@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import StockNews from './StockNews';
 
 export default function StockNewsListings({ news }) {
