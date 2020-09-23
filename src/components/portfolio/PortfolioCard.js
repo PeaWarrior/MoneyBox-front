@@ -27,7 +27,7 @@ export default function PortfolioCard(props) {
                     </Col>
                     <Col>
                         <small>Realized Gains/Losses</small>
-                        <h6>${realized ? realized.toFixed(2) : null}</h6>
+                        <h6>${realized ? realized.toFixed(2) : 0}</h6>
                     </Col>
                 </Row>
                 <Row>

@@ -1,10 +1,21 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import logo from '../logo.png';
+import { logout } from './user/userActions';
 
 export default function NavigationBar() {
-    const { currentUser } = useSelector(state => state.user)
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const { currentUser } = useSelector(state => state.user);
+
+    const handleClickLogOut = event => {
+        dispatch(logout());
+        history.push({
+            pathname: '/'
+        })
+    }
 
     return (
         <nav>
@@ -13,7 +24,7 @@ export default function NavigationBar() {
             {currentUser ? 
                 <>
                 <NavLink to="/search">Search</NavLink>
-                <button>Logout</button>
+                <button onClick={handleClickLogOut} >Logout</button>
                 </>
                 :
                 <>

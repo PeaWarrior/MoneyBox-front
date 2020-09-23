@@ -34,7 +34,12 @@ const reducer = (state = defaultState, action) => {
         case 'LOGOUT':
             return {
                 ...state,
-                currentUser: null
+                currentUser: null,
+                form: {
+                    username: '',
+                    password: '',
+                    password_confirmation: ''
+                }
             }
         default:
             return state;

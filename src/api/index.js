@@ -61,8 +61,8 @@ export const getStockDataRequest = (query) => {
     .then(resp => resp.json())
 };
 
-export const getStockNewsRequest = (query) => {
-    return fetch(`${URL}stocks/${query}`, {
+export const getStockQuotesRequest = (queries) => {
+    return fetch(`${URL}quotes/${queries}`, {
         headers: {
             'Authorization': `Bearer ${localStorage.token}`,
             'Content-Type': 'application/json'

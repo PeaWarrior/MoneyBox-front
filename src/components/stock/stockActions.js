@@ -1,22 +1,27 @@
-import { getStockDataRequest, getStockNewsRequest } from '../../api';
+import { getStockDataRequest, getStockQuotesRequest } from '../../api';
 
-export const fetchStockData = (query) => {
+export const fetchStockData = query => {
     return function(dispatch) {
         getStockDataRequest(query)
         .then(data => {
-            console.log(data)
             dispatch(setStock(data))
         })
     }
 };
 
-export const fetchStockNewsData = (ticker) => {
+export const fetchStockQuotes = queries => {
     return function(dispatch) {
-        getStockNewsRequest(ticker)
+        getStockQuotesRequest(queries)
         .then(data => {
-            console.log(data)
-            // dispatch(setStock(data))
+            dispatch(setQuotes(data))
         })
+    }
+}
+
+export const setQuotes = (quotes) => {
+    return {
+        type: 'SET_QUOTES',
+        payload: quotes
     }
 };
 
@@ -32,4 +37,23 @@ export const setStock = (stock) => {
         type: 'SET_STOCK',
         payload: stock
     }
+};
+
+
+// UTILITY
+
+export const calculateChange = (currentPrice, openPrice, shares = 1) => {
+    return function() {
+        const type = currentPrice > openPrice ? '+' : '-';
+        const amountChange = (Math.abs(currentPrice - openPrice) * shares).toFixed(2)
+        const percentChange = (Math.abs((currentPrice/openPrice)-1) * shares).toFixed(2)
+        return {
+            type: type,
+            message: `
+                ${type}
+                $${amountChange} 
+                (${percentChange}%) 
+            `
+        };
+    };
 };

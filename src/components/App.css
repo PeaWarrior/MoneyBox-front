@@ -21,3 +21,11 @@ nav {
 .date {
     margin-bottom: 1rem;
 }
+
+.pos {
+    color: green;
+}
+
+.neg {
+    color: red;
+}

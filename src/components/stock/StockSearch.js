@@ -21,7 +21,7 @@ export default function StockSearch() {
             <InputGroup>
                 <input onChange={handleChange} value={query} placeholder="Search symbol" />
                 <InputGroup.Append>
-                    <Button variant="outline-secondary" type="submit"><i class="fas fa-search"></i></Button>
+                    <Button variant="outline-secondary" type="submit"><i className="fas fa-search"></i></Button>
                 </InputGroup.Append>
             </InputGroup>
         </Form>

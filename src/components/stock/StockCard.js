@@ -1,14 +1,40 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Accordion, Card, Container, Row, Col } from 'react-bootstrap';
 import ActivityCard from '../activity/ActivityCard';
+import { calculateChange } from './stockActions';
 
-export default function StockCard({ id, name, ticker, shares, costBasis, average_price, realized, activities, lastTrade }) {
+export default function StockCard({ id, name, ticker, shares, costBasis, average_price, realized, activities, lastTrade, lastPrice, openPrice }) {
+    const dispatch = useDispatch();
+    const [currentPrice, setCurrentPrice] = useState(lastPrice);
+    const [currentChange, setCurrentChange] = useState({});
+    const [currentStockPrice, setCurrentStockPrice] = useState({});
+
+    useEffect(() => {
+        if (lastTrade) {
+            setCurrentPrice(lastTrade.toFixed(2));
+        }
+    }, [lastTrade]);
+
+    useEffect(() => {
+        if (lastPrice) {
+            setCurrentPrice(lastPrice.toFixed(2));
+        }
+    }, [lastPrice]);
+
+    useEffect(() => {
+        setCurrentChange(dispatch(calculateChange(currentPrice, average_price, shares)));
+    }, [currentPrice]);
+
+    useEffect(() => {
+        setCurrentStockPrice(dispatch(calculateChange(currentPrice, openPrice)));
+    }, [currentPrice]);
 
     const renderTransactions = () => {
         return activities.map(activity => (
             <ActivityCard key={activity.id} {...activity} />
         ))
-    }
+    };
 
     return (
         <Accordion>
@@ -19,32 +45,31 @@ export default function StockCard({ id, name, ticker, shares, costBasis, average
                             <Col>
                                 <h4 className="stockName">{name}</h4>
                                 <small>{ticker}</small>
-
                             </Col>
                             <Col>
-                                <small>Shares</small>
-                                <h6>{shares}</h6>
+                                <small>Average Cost</small>
+                                <h6>${average_price.toFixed(2)}</h6>
                             </Col>
                             <Col>
                                 <small>Market Value</small>
-                                <h6>${(shares*lastTrade).toFixed(2)}</h6>
+                                <h6>${currentPrice * shares}</h6>
                             </Col>
                             <Col>
                                 <small>Total Return</small>
-                                <h6>${lastTrade ? 
-                                    `${((lastTrade-average_price)*shares).toFixed(2)} (${(((lastTrade/average_price)-1)*100).toFixed(2)}%)`
-                                    : 
-                                    null}
+                                <h6 className={currentChange.type === '+' ? 'pos' : 'neg'}>
+                                    {currentChange.message}
                                 </h6>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                                <h3>${lastTrade ? lastTrade.toFixed(2) : null}</h3>
+                                    <h3 className={`mb-0 ${currentStockPrice.type === '+' ? 'pos' : 'neg'}`}>${currentPrice}</h3>
+                                    <small className={currentStockPrice.type === '+' ? 'pos' : 'neg'}>{currentStockPrice.message}</small>
+                                    <small>Today</small>
                             </Col>
                             <Col>
-                                <small>Average Cost</small>
-                                <h6>${average_price.toFixed(2)}</h6>
+                                <small>Shares</small>
+                                <h6>{shares}</h6>
                             </Col>
                             <Col>
                                 <small>Cost Basis</small>
@@ -68,6 +93,5 @@ export default function StockCard({ id, name, ticker, shares, costBasis, average
                 
             </Card>
         </Accordion>
-
     )
 }
