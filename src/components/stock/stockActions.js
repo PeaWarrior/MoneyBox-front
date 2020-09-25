@@ -39,7 +39,6 @@ export const setStock = (stock) => {
     }
 };
 
-
 // UTILITY
 
 export const calculateChange = (currentPrice, openPrice, shares = 1) => {

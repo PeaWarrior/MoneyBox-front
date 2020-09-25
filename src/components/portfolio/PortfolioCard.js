@@ -17,16 +17,14 @@ export default function PortfolioCard(props) {
     return (
             <Card.Header>
                 <Row>
-                    <Col>
-                        <h1 className="stockName">{name}</h1>
-                    </Col>
+                    <Col><h3 className="stockName">{name}</h3></Col>
                     <Col>
                         <small>Original Investment</small>
                         <h6>${totalFunds}</h6>
                     </Col>
                     <Col>
                         <small>Realized Gains/Losses</small>
-                        <h6>${realized}</h6>
+                        <h6 className={realized > 0 ? 'pos' : 'neg'}>${realized}</h6>
                     </Col>
                     <Col></Col>
                 </Row>
@@ -34,7 +32,7 @@ export default function PortfolioCard(props) {
                     <Col>
                     </Col>
                     <Col>
-                        <small>Cash Available</small>
+                        <small>Available Balance</small>
                         <h6>${cash}</h6>
                     </Col>
                     <Col>

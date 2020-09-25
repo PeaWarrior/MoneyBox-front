@@ -11,7 +11,7 @@ export default function StockDash({ name, ticker, lastTrade, fundamental }) {
 
     useEffect(() => {
         if (lastTrade) {
-            setCurrentPrice(lastTrade.toFixed(2));
+            setCurrentPrice(lastTrade);
         }
     }, [lastTrade]);
 

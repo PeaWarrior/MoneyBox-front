@@ -48,6 +48,18 @@ export const createNewActivityRequest = (activityFormData) => {
     .then(resp => resp.json())
 };
 
+export const sellActivityRequest = (activityFormData) => {
+    return fetch(`${URL}sell`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(activityFormData)
+    })
+    .then(resp => resp.json())
+}
+
 // STOCK REQUESTS
 
 export const getStockDataRequest = (query) => {

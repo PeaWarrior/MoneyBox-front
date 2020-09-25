@@ -13,7 +13,7 @@ export default function StockCard({ id, name, ticker, shares, costBasis, average
 
     useEffect(() => {
         if (lastTrade) {
-            setCurrentPrice(lastTrade.toFixed(2));
+            setCurrentPrice(lastTrade);
         }
     }, [lastTrade]);
 
@@ -45,7 +45,7 @@ export default function StockCard({ id, name, ticker, shares, costBasis, average
                         <Row>
                             <Col>
                                 <Row><h4>{ticker}</h4></Row>
-                                <Row>Price</Row>
+                                {/* <Row>Price</Row> */}
                                 <Row>
                                     <h3 className={`mb-0 ${currentStockPrice.type === '+' ? 'pos' : 'neg'}`}>
                                         ${currentPrice}

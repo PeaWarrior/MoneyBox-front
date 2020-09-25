@@ -16,9 +16,11 @@ export default function PortfolioListings() {
     const renderPortfolios = () => {
         return portfolios.map((portfolio, index) => {
             return (
-                <Card className="mt-3">
-                    <PortfolioCard 
-                        key={portfolio.id} 
+                <Card 
+                    className="mt-3"
+                    key={portfolio.id}
+                >
+                    <PortfolioCard  
                         index={index} 
                         {...portfolio} 
                     />

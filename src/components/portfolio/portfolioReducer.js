@@ -1,6 +1,8 @@
 const defaultState = {
     portfolios: [],
-    currentPortfolio: {},
+    currentPortfolio: {
+        stocks: []
+    },
 };
 
 const reducer = (state = defaultState, action) => {
@@ -17,7 +19,6 @@ const reducer = (state = defaultState, action) => {
             return {
                 ...state,
                 portfolios: [
-                    ...state.portfolios,
                     ...action.payload
                 ]
             }

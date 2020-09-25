@@ -12,23 +12,32 @@ export default function StockPage() {
     const [lastTrade, setLastTrade] = useState(null);
 
     useEffect(() => {
-        const socket = new WebSocket(`wss://ws.finnhub.io?token=${process.env.REACT_APP_FINNHUBB_API_KEY}`);
-
         if (stock.ticker) {
+            const socket = new WebSocket(`wss://ws.finnhub.io?token=${process.env.REACT_APP_FINNHUBB_API_KEY}`);
+
             socket.addEventListener('open', function (event) {
                 socket.send(JSON.stringify({'type':'subscribe', 'symbol': stock.ticker}))
             });
+
+            let trade = null
     
             socket.addEventListener('message', function (event) {
-                const message = JSON.parse(event.data)
+                const message = JSON.parse(event.data);
                 if (message.type === 'trade') {
-                    setLastTrade(message.data[0].p.toFixed(2))
+                    trade = message.data[0].p.toFixed(2);
                 }
             });
-        }
 
-        return () => socket.close()
-    }, [stock.ticker])
+            const interval = setInterval(() => {
+                setLastTrade(prevState => trade)
+            }, 1000);
+            
+            return () => {
+                socket.close();
+                clearInterval(interval)
+            }
+        }
+    }, [stock.ticker]);
 
     return (
         <Container>
