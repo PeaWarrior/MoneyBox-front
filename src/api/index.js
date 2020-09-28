@@ -81,3 +81,12 @@ export const getStockQuotesRequest = (queries) => {
     })
     .then(resp => resp.json())
 };
+
+export const getIntradayPricesRequest = (query) => {
+    return fetch(`http://localhost:3001/intraday/${query}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.token}`
+        }
+    })
+    .then(resp => resp.json())
+}

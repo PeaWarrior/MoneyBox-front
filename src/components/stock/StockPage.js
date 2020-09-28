@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import moment from 'moment';
 import { Container, Card } from 'react-bootstrap';
 import StockSearch from './StockSearch';
 import StockDash from './StockDash';
@@ -10,6 +11,7 @@ import StockNewsListings from './StockNewsListings';
 export default function StockPage() {
     const stock = useSelector(state => state.stock.stock);
     const [lastTrade, setLastTrade] = useState(null);
+    const [lastMinute, setLastMinute] = useState(moment().minute());
 
     useEffect(() => {
         if (stock.ticker) {
@@ -20,16 +22,20 @@ export default function StockPage() {
             });
 
             let trade = null
+            let minute = null
     
             socket.addEventListener('message', function (event) {
                 const message = JSON.parse(event.data);
                 if (message.type === 'trade') {
                     trade = message.data[0].p.toFixed(2);
+                    // minute = message.data[0].t;
+                    minute = moment(message.data[0].t).minute();
                 }
             });
 
             const interval = setInterval(() => {
-                setLastTrade(prevState => trade)
+                setLastTrade(prevState => trade);
+                setLastMinute(prevState => minute);
             }, 1000);
             
             return () => {
@@ -37,6 +43,17 @@ export default function StockPage() {
                 clearInterval(interval)
             }
         }
+        // if (stock.ticker) {
+        //     const lastMinute = moment().minute()
+        //     const interval = setInterval(() => {
+        //         setLastTrade(prevState => (Math.random())+112);
+        //         setLastMinute(prevState => lastMinute);
+        //     }, 1000);
+
+        //     return () => {
+        //         clearInterval(interval);
+        //     }
+        // }
     }, [stock.ticker]);
 
     return (
@@ -48,7 +65,7 @@ export default function StockPage() {
             <br/>
             <Card>
                 <Card.Header>
-                    {stock.ticker ? <StockDash {...stock} lastTrade={lastTrade} /> : null}
+                    {stock.ticker ? <StockDash {...stock} lastTrade={lastTrade} lastMinute={lastMinute} /> : null}
                 </Card.Header>
                 {/* {stock.ticker ? <ActivityListings /> : null} */}
                 {stock.ticker ? <StockFundamental /> : null}

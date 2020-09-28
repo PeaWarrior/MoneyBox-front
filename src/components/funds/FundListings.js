@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Card, Container, Row, Col, Accordion, Button } from 'react-bootstrap';
 import FundCard from './FundCard';
 
 export default function FundListings() {
-    const dispatch = useDispatch();
     const { funds } = useSelector(state => state.portfolio.currentPortfolio);
     const [show, setShow] = useState(false);
 
@@ -32,7 +31,7 @@ export default function FundListings() {
     }
 
     return (
-        <Container className="mt-5">
+        <Container>
             <Accordion>
                     <Container className="pb-1">
                         <Row>

@@ -12,7 +12,6 @@ export default function StockNewsListings({ news }) {
         setCurrentPage(currentPage-1)
     };
 
-    console.log(currentPage);
     const renderArticles = () => {
         const currentNews = news.slice(((currentPage-1)*4), (currentPage*4))
         return currentNews.map(article => <StockNews key={article.id} {...article} />)

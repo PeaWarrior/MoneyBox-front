@@ -1,6 +1,6 @@
 import store from '../../store';
 import { createNewActivityRequest, sellActivityRequest } from '../../api';
-import { setStocks } from '../stock/stockActions';
+// import { setStocks } from '../stock/stockActions';
 import { setCurrentPortfolio } from '../portfolio/portfolioActions';
 
 export const createAndFetchNewActivity = (form) => {

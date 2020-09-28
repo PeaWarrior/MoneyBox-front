@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Card, Row, Col, Button } from 'react-bootstrap';
+import PortfolioChart from './PortfolioChart';
 
 export default function PortfolioCard(props) {
     const history = useHistory();

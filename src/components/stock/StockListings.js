@@ -58,7 +58,7 @@ export default function StockListings() {
         const stocksWithShares = stocks.map(stock => {
             if (stock.shares > 0) {
                 return <StockCard key={stock.id} {...quotes[stock.ticker]} lastTrade={lastTrade[stock.ticker]} {...stock} />
-            }
+            } else return 'NONE'
         });
         return stocksWithShares.length > 0 ? stocksWithShares : <>No current positions</>
     }
