@@ -43,7 +43,7 @@ export const setStock = (stock) => {
 
 export const calculateChange = (currentPrice, openPrice, shares = 1) => {
     return function() {
-        const type = currentPrice > openPrice ? '+' : '-';
+        const type = currentPrice >= openPrice ? '+' : '-';
         const amountChange = (Math.abs(currentPrice - openPrice) * shares).toFixed(2)
         const percentChange = (Math.abs((currentPrice/openPrice)-1) * shares).toFixed(2)
         return {

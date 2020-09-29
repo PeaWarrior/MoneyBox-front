@@ -1,28 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { Container, Row, Col } from 'react-bootstrap';
-import { calculateChange } from './stockActions';
 import ActivityForm from '../activity/ActivityForm';
 import StockChart from './StockChart';
 
-export default function StockDash({ name, ticker, lastTrade, fundamental, lastMinute }) {
-    const dispatch = useDispatch();
+export default function StockDash({ name, ticker, fundamental }) {
     const [currentPrice, setCurrentPrice] = useState(fundamental.lastPrice);
-    const [currentChange, setCurrentChange] = useState({});
-
-    useEffect(() => {
-        if (lastTrade) {
-            setCurrentPrice(lastTrade);
-        }
-    }, [lastTrade]);
 
     useEffect(() => {
         setCurrentPrice(fundamental.lastPrice);
     }, [ticker]);
-
-    useEffect(() => {
-        setCurrentChange(dispatch(calculateChange(currentPrice, fundamental.openPrice)));
-    }, [currentPrice, dispatch, fundamental.openPrice]);
 
     return (
         <Container>
@@ -33,9 +19,8 @@ export default function StockDash({ name, ticker, lastTrade, fundamental, lastMi
             </Container>
             <StockChart 
                 ticker={ticker} 
-                currentPrice={currentPrice} 
+                lastPrice={fundamental.lastPrice} 
                 openPrice={fundamental.openPrice} 
-                lastMinute={lastMinute}
             />
             <Row className="justify-content-end mt-3">
                 {/* <Col> */}

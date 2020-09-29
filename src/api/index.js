@@ -82,10 +82,11 @@ export const getStockQuotesRequest = (queries) => {
     .then(resp => resp.json())
 };
 
-export const getIntradayPricesRequest = (query) => {
+export const getIntradayPricesRequest = (query, openPrice) => {
     return fetch(`http://localhost:3001/intraday/${query}`, {
         headers: {
-            'Authorization': `Bearer ${localStorage.token}`
+            'Authorization': `Bearer ${localStorage.token}`,
+            'openPrice': openPrice
         }
     })
     .then(resp => resp.json())

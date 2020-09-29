@@ -1,72 +1,102 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Chart, Line } from 'react-chartjs-2';
 import { Row, Container } from 'react-bootstrap';
 import moment from 'moment';
-import { getIntradayPricesRequest } from '../../api';
 import { calculateChange } from './stockActions';
+import { setIntradayChart, setPrices, setBorderColor } from './stockChartActions';
 
-export default function StockChart({ ticker, currentPrice, openPrice, lastMinute }) {
+export default function StockChart({ ticker, openPrice, lastPrice }) {
     const dispatch = useDispatch();
-    const [graphData, setGraphData] = useState({});
-    const [price, setPrice] = useState(currentPrice);
+    const { date, graphData } = useSelector(state => state.stockChart);
+    const [lastTrade, setLastTrade] = useState({
+        price: lastPrice,
+        time: moment().format('hh:mm A')
+    });
+    const [option, setOption] = useState('intraday');
+    const [displayPrice, setDisplayPrice] = useState(null);
+    const [displayTime, setDisplayTime] = useState(null);
     const [currentChange, setCurrentChange] = useState({});
-    const [time, setTime] = useState(moment().format('hh:mm A'));
-    const [date, setDate] = useState(null);
-
-    const times = Array.from({
-        length: 391
-        }, 
-        (_, minute) => moment({
-            hour: Math.floor(((minute + 30) / 60) + 9),
-            minutes: (minute+30) % 60
-            }).format('hh:mm A')
-    );
 
     useEffect(() => {
-        if (graphData.datasets.length) {
-            const updatedPrices = graphData.datasets[0].data.map((price,index) => {
-                if (index === graphData.datasets[0].data.length -1 ) {
-                    return currentPrice
-                } else {
-                    return price
+        if (ticker) {
+            switch (option) {
+                case 'intraday':
+                    dispatch(setIntradayChart(ticker, openPrice));
+                    break;
+                default:
+                    break;
+            }
+        }
+    }, [option, ticker]);
+
+    useEffect(() => {
+        if (ticker) {
+            const socket = new WebSocket(`wss://ws.finnhub.io?token=${process.env.REACT_APP_FINNHUBB_API_KEY}`);
+
+            socket.addEventListener('open', function (event) {
+                socket.send(JSON.stringify({'type':'subscribe', 'symbol': ticker}))
+            });
+
+            let mostRecentTrade;
+    
+            socket.addEventListener('message', function (event) {
+                const message = JSON.parse(event.data);
+                if (message.type === 'trade') {
+                    mostRecentTrade = {
+                        price: message.data[0].p.toFixed(2),
+                        time: moment(message.data[0].t).format('hh:mm A')
+                    }
                 }
-            })
-            setGraphData(prevState => ({
-                ...prevState,
-                datasets: [{
-                    ...prevState.datasets[0],
-                    data: [
-                        ...updatedPrices
-                    ]
-                }]
-            }));
+            });
+
+            const interval = setInterval(() => {
+                if (mostRecentTrade) {
+                    setLastTrade(prevState => mostRecentTrade);
+                }
+            }, 1000);
+            
+            return () => {
+                socket.close();
+                clearInterval(interval)
+            }
         }
-    }, [currentPrice])
+    }, [ticker, lastPrice, openPrice, dispatch]);
 
     useEffect(() => {
-        if (graphData.datasets.length) {
-            setGraphData(prevState => ({
-                ...prevState,
-                datasets: [{
-                    ...prevState.datasets[0],
-                    data: [
-                        ...prevState.datasets[0].data,
-                        currentPrice
-                    ],
-                    borderColor: (currentPrice > openPrice ? '#00ad00' : 'red')
-                }]
-            }));
-            setTime(moment().format('hh:mm A'));
+        setLastTrade(prevState => ({
+            price: lastPrice,
+            time: moment().format('hh:mm A')
+        }));
+        setCurrentChange(dispatch(calculateChange(lastPrice, openPrice)));
+    }, [ticker])
+
+    useEffect(() => {
+        // if (graphData.datasets[0].data.length) {
+            const updatedPrices = [...graphData.datasets[0].data];
+            updatedPrices[updatedPrices.length-1] = lastTrade.price;
+            dispatch(setPrices(updatedPrices));
+            const borderColor = lastTrade.price > openPrice ? '#00ad00' : 'red';
+            if (graphData.datasets[0].borderColor !== borderColor) {
+                dispatch(setBorderColor(borderColor));
+            }
+        // }
+    }, [lastTrade.price]);
+
+    useEffect(() => {
+        if (option === 'intraday' && graphData.datasets[0].data.length) {
+            const updatedPrices = [...graphData.datasets[0].data, lastTrade.price]
+            dispatch(setPrices(updatedPrices));
+            setDisplayTime(moment().format('hh:mm A'));
         }
-    }, [lastMinute])
+    }, [lastTrade.time, option])
 
     useEffect(() => {
         setCurrentChange(dispatch(calculateChange(
-            (price ? price : currentPrice), 
+            (displayPrice ? displayPrice : lastTrade.price), 
             openPrice
             )));
-    }, [price, dispatch, openPrice]);
+    }, [displayPrice]);
 
     useEffect(() => {
         const verticleLinePlugin = {
@@ -95,36 +125,6 @@ export default function StockChart({ ticker, currentPrice, openPrice, lastMinute
         }
     }, [])
 
-    useEffect(() => {
-        if (ticker) {
-            getIntradayPricesRequest(ticker)
-            .then(data => {
-                let prevPrice;
-                const prices = data.map(intradayTrade => {
-                    if (intradayTrade.average) {
-                        prevPrice = intradayTrade.average
-                        return prevPrice
-                    } else {
-                        return prevPrice
-                    }
-                });
-                setGraphData({
-                    labels: times,
-                    datasets: [{
-                        data: prices,
-                        clip: 0,
-                        fill: false,
-                        lineTension: 0.1,
-                        borderColor: '#00ad00',
-                        borderCapStyle: 'round',
-                        pointRadius: 0
-                    }]
-                });
-                setDate(moment(data[0].date).format('MMM D, YYYY'));
-            })
-        }
-    }, [ticker]);
-
     const graphOptions = {
         animation: false,
         legend: {display: false},
@@ -139,13 +139,13 @@ export default function StockChart({ ticker, currentPrice, openPrice, lastMinute
             custom: (tooltipModel) => {
                 if (tooltipModel.body === undefined) {
                     const currentTime = moment().format('hh:mm A');
-                    setTime(currentTime)
-                    setPrice(null);
+                    setDisplayTime(currentTime);
+                    setDisplayPrice(null);
                     return;
                 }
                 if (tooltipModel.dataPoints && !(moment(tooltipModel.dataPoints[0].label, "hh:mm A").format('mm') % 5)) {
-                    setPrice((Math.round(tooltipModel.dataPoints[0].value*100)/100).toFixed(2));
-                    setTime(tooltipModel.dataPoints[0].label);
+                    setDisplayPrice((Math.round(tooltipModel.dataPoints[0].value*100)/100).toFixed(2));
+                    setDisplayTime(tooltipModel.dataPoints[0].label);
                 }
             }
         },
@@ -183,14 +183,14 @@ export default function StockChart({ ticker, currentPrice, openPrice, lastMinute
             </Row>
             <Row>
                 <h3 className={`mb-0 ${currentChange.type === '+' ? 'pos' : 'neg'}`}>
-                    ${price ? price : currentPrice}
+                    ${displayPrice ? displayPrice : lastTrade.price}
                 </h3>
             </Row>
             <Row>
                 <small className={currentChange.type === '+' ? 'pos' : 'neg'}>
                     {currentChange.message}
                 </small>
-                <small className='ml-1'>{time}</small>
+                <small className='ml-1'>{displayTime ? displayTime : lastTrade.time}</small>
             </Row>
             </Container>
             <Line
