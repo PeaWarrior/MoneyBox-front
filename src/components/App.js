@@ -9,6 +9,7 @@ import PortfolioListings from './portfolio/PortfolioListings';
 import PortfolioPage from './portfolio/PortfolioPage';
 import StockPage from './stock/StockPage';
 import { autologin } from './user/userActions';
+import LandingPage from './user/LandingPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -22,23 +23,24 @@ function App() {
 
   return (
     <Router>
-      <NavigationBar />
+      { currentUser ? 
+        <NavigationBar /> 
+        :
+        null 
+      }
 
       <Switch>
-        <Route exact path="/login">
-          { currentUser ? <Redirect to='/'/> : <Login /> }
-        </Route>
         <Route exact path="/signup">
           { currentUser ? <Redirect to='/'/> : <Signup /> }
         </Route>
         <Route exact path="/portfolio">
-          { currentUser ? <PortfolioPage /> : <Redirect to='/login'/> }
+          { currentUser ? <PortfolioPage /> : <Redirect to='/'/> }
         </Route>
         <Route exact path="/search">
-          { currentUser ? <StockPage /> : <Redirect to='/login'/> }
+          { currentUser ? <StockPage /> : <Redirect to='/'/> }
         </Route>
-        <Route exact path="/">
-          { currentUser ? <PortfolioListings /> : <Redirect to='/login'/> }
+        <Route exact path ="/">
+          { currentUser ? <PortfolioListings /> : <LandingPage /> }
         </Route>
       </Switch>
 

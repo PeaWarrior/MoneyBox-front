@@ -20,12 +20,18 @@ nav {
     width: 3rem;
 }
 
+.logo-name {
+    font-family: 'Titillium Web', serif;
+    font-weight: 800;
+    color: #8ec4c0;
+}
+
 .box {
     border: 1px solid black
 }
 
 .stockName {
-    margin: 0
+    /* margin: 0 */
 }
 
 .news-image {
@@ -42,4 +48,64 @@ nav {
 
 .neg {
     color: red;
+}
+
+.form-container {
+    padding: 4rem;
+    border: 1px solid black;
+    border-radius: 25px;
+    background: white;
+}
+
+.form-container h2 {
+    font-family: 'Titillium Web', serif;
+    /* font-size: clamp(18px, 15vw, 36px); */
+    font-weight: 800;
+    color: #408884;
+}
+
+.signup-container {
+    height: 100vh;
+}
+
+.signup {
+    width: 360px;
+}
+
+/* sections */
+.section {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* hero section */
+
+.hero-section {
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='Artboard-5' fill='%23a1e7e1' fill-opacity='0.4' fill-rule='nonzero'%3E%3Cpath d='M6 18h12V6H6v12zM4 4h16v16H4V4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.section h1 {
+    font-family: 'Titillium Web', serif;
+    font-size: clamp(60px, 15vw, 150px);
+    font-weight: 700;
+    line-height: 15vh;
+    color: #b0d9d6;
+}
+
+.section h2 {
+    font-size: clamp(26px, 2.5vw, 35px);
+    color: #408884;
+}
+
+.section p {
+    color: #408884;
+    padding: 1rem;
+}
+
+.landing-logo {
+    width: clamp(200px, 30vw, 300px);
 }

@@ -27,6 +27,7 @@ export default function NavigationBar() {
                     className="logo"
                     alt="MoneyBox logo"
                 />
+                <span className="logo-name">MoneyBox</span>
             </Navbar.Brand>
             <Nav className="mr-auto">
                 {currentUser ? 
@@ -39,16 +40,9 @@ export default function NavigationBar() {
                 }
             </Nav>
 
-            {currentUser ? 
-                <Nav className="ml-auto">
-                    <Button onClick={handleClickLogOut} >Logout</Button>
-                </Nav>
-                :
-                <Nav className="ml-auto">
-                    <NavLink to="/login" className="nav-link"><Button>Login</Button></NavLink>
-                    <NavLink to="/signup" className="nav-link"><Button>Signup</Button></NavLink>
-                </Nav>
-            }
+            <Nav className="ml-auto">
+                <Button onClick={handleClickLogOut} variant="outline-info">Logout</Button>
+            </Nav>
             </Container>
         </Navbar>
     )

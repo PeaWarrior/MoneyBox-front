@@ -69,7 +69,7 @@ export default function StockChart({ ticker, currentPrice, openPrice, lastMinute
     }, [price, dispatch, openPrice]);
 
     useEffect(() => {
-        Chart.pluginService.register({
+        const verticleLinePlugin = {
             afterDraw: function(chart, easing) {
                 if (chart.tooltip._active && chart.tooltip._active.length) {
                     const activePoint = chart.controller.tooltip._active[0];
@@ -88,7 +88,11 @@ export default function StockChart({ ticker, currentPrice, openPrice, lastMinute
                     ctx.restore();
                 }
             }
-          });
+          }
+        Chart.pluginService.register(verticleLinePlugin);
+        return () => {
+            Chart.pluginService.unregister(verticleLinePlugin);
+        }
     }, [])
 
     useEffect(() => {
@@ -125,7 +129,7 @@ export default function StockChart({ ticker, currentPrice, openPrice, lastMinute
         animation: false,
         legend: {display: false},
         maintainAspectRatio: true,
-        aspectRatio: 1,
+        aspectRatio: 2,
         responsive: true,
         responsiveAnimationDuration: 0,
         tooltips: {

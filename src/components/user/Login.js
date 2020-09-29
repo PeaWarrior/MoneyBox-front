@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from './userActions';
+import { Container, Form, Row } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 
 export default function Signup() {
     const { username, password } = useSelector(state => state.user.form);
@@ -20,32 +22,47 @@ export default function Signup() {
     }
     
     return (
-        <div>
-            <form onSubmit={handleSubmit} >
-                <label>
-                    Username
-                    <input 
+        <Container className="form-container">
+            <div className="text-center">
+                <h2>MoneyBox</h2>
+            </div>
+            <br/>
+            <br/>
+            <Form onSubmit={handleSubmit} >
+                <Form.Group>
+                    <Form.Control 
                         onChange={handleChange} 
                         value={username}
                         autoComplete="username"
                         type="text" 
                         name="username" 
+                        placeholder="Username" 
                     />
-                </label>
-                <br/>
-                <label>
-                    Password
-                    <input 
+                </Form.Group>
+                <Form.Group>
+                    <Form.Control 
                         onChange={handleChange} 
-                        value={password} 
-                        autoComplete="new-password"
+                        value={password}
+                        autoComplete="password"
                         type="password" 
                         name="password" 
+                        placeholder="Password" 
                     />
-                </label>
+                </Form.Group>
                 <br/>
-                <button type="submit">Login</button>
-            </form>
-        </div>
+                <Form.Group>
+                    <Form.Control 
+                        type="submit" 
+                        value="Login"
+                        className="btn-info"
+                    />
+                </Form.Group>
+            </Form>
+            <Container className="text-center">
+                    <span>Don't have an account?</span>
+                    <br/>
+                    <NavLink to="/signup">Sign Up</NavLink>
+            </Container>
+        </Container>
     );
 };

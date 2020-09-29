@@ -31,7 +31,7 @@ export default function FundListings() {
     }
 
     return (
-        <Container>
+        <Container className="mb-5">
             <Accordion>
                     <Container className="pb-1">
                         <Row>
