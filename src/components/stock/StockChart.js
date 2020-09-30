@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Chart, Line } from 'react-chartjs-2';
 import { Row, Container, Button } from 'react-bootstrap';
@@ -7,16 +7,22 @@ import { calculateChange } from './stockActions';
 import { setIntradayChart, setWeekChart, setPrices, setBorderColor } from './stockChartActions';
 
 export default function StockChart({ ticker, openPrice, lastPrice }) {
-    const dispatch = useDispatch();
     const { date, graphData } = useSelector(state => state.stockChart);
+    const dispatch = useDispatch();
+
+    const [option, setOption] = useState('intraday');
     const [lastTrade, setLastTrade] = useState({
         price: lastPrice,
         time: moment().format('hh:mm A')
     });
-    const [option, setOption] = useState('intraday');
-    const [displayPrice, setDisplayPrice] = useState(null);
-    const [displayTime, setDisplayTime] = useState(null);
+
     const [currentChange, setCurrentChange] = useState({});
+    const [display, setDisplay] = useState({
+        date: null,
+        time: null,
+        price: null
+    });
+    const ws = useRef(null);
 
     useEffect(() => {
         if (ticker) {
@@ -35,15 +41,23 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
 
     useEffect(() => {
         if (ticker && moment().hour() < 16) {
-            const socket = new WebSocket(`wss://ws.finnhub.io?token=${process.env.REACT_APP_FINNHUBB_API_KEY}`);
+            ws.current = new WebSocket(`wss://ws.finnhub.io?token=${process.env.REACT_APP_FINNHUBB_API_KEY}`);
 
-            socket.addEventListener('open', function (event) {
-                socket.send(JSON.stringify({'type':'subscribe', 'symbol': ticker}))
+            ws.current.addEventListener('open', function (event) {
+                ws.current.send(JSON.stringify({'type':'subscribe', 'symbol': ticker}))
             });
+            
+            return () => {
+                ws.current.close();
+            }
+        }
+    }, [ticker, dispatch]);
 
+    useEffect(() => {
+        if (ws.current) {
             let mostRecentTrade;
     
-            socket.addEventListener('message', function (event) {
+            ws.current.addEventListener('message', function (event) {
                 const message = JSON.parse(event.data);
                 if (message.type === 'trade') {
                     mostRecentTrade = {
@@ -55,16 +69,15 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
 
             const interval = setInterval(() => {
                 if (mostRecentTrade) {
-                    setLastTrade(prevState => mostRecentTrade);
+                    setLastTrade(mostRecentTrade);
                 }
             }, 1000);
-            
+
             return () => {
-                socket.close();
-                clearInterval(interval)
+                clearInterval(interval);
             }
         }
-    }, [ticker, lastPrice, openPrice, dispatch]);
+    }, [])
 
     useEffect(() => {
         setLastTrade(prevState => ({
@@ -75,10 +88,10 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
     }, [ticker, lastPrice, openPrice, dispatch])
 
     useEffect(() => {
-        const updatedPrices = [...graphData.datasets[0].data];
-        if (updatedPrices[updatedPrices.length-1] === lastTrade.price) {
-            updatedPrices[updatedPrices.length-1] = lastTrade.price;
-            dispatch(setPrices(updatedPrices));
+        const prices = [...graphData.datasets[0].data];
+        if (prices[prices.length-1] === lastTrade.price) {
+            prices[prices.length-1] = lastTrade.price;
+            dispatch(setPrices(prices));
         }
 
         const borderColor = lastTrade.price > openPrice ? '#00ad00' : 'red';
@@ -92,16 +105,17 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
         if (option === 'intraday' && graphData.datasets[0].data.length) {
             const updatedPrices = [...graphData.datasets[0].data, lastTrade.price]
             dispatch(setPrices(updatedPrices));
-            setDisplayTime(moment().format('hh:mm A'));
+            setDisplay(prevState => ({
+                ...prevState,
+                time: moment().format('hh:mm A')
+            }));
         }
     }, [lastTrade.time, option, dispatch])
 
     useEffect(() => {
-        setCurrentChange(dispatch(calculateChange(
-            (displayPrice ? displayPrice : lastTrade.price), 
-            openPrice
-            )));
-    }, [displayPrice, dispatch]);
+        const price = display.price ? display.price : lastTrade.price
+        setCurrentChange(dispatch(calculateChange(price, openPrice)));
+    }, [display.price, dispatch]);
 
     useEffect(() => {
         const verticleLinePlugin = {
@@ -110,8 +124,8 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
                     const activePoint = chart.controller.tooltip._active[0];
                     const ctx = chart.ctx;
                     const x = activePoint.tooltipPosition().x;
-                    const topY = chart.scales['y-axis-0'].top;
-                    const bottomY = chart.scales['y-axis-0'].bottom;
+                    const topY = chart.legend.bottom;
+                    const bottomY = chart.chartArea.bottom;
         
                     ctx.save();
                     ctx.beginPath();
@@ -126,6 +140,7 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
           }
         Chart.pluginService.register(verticleLinePlugin);
         return () => {
+            console.log('hello')
             Chart.pluginService.unregister(verticleLinePlugin);
         }
     }, [])
@@ -144,20 +159,26 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
             custom: (tooltipModel) => {
                 if (tooltipModel.body === undefined) {
                     const currentTime = moment()
-                    const timeToDisplay = currentTime.hour() <= 16 ? currentTime.format('hh:mm A') : '04:00 PM'
-                    setDisplayTime(timeToDisplay);
-                    setDisplayPrice(null);
-                    return;
+                    const timeToDisplay = currentTime.hour() <= 16 && currentTime.hour() > 8 ? currentTime.format('hh:mm A') : '04:00 PM'
+                    setDisplay({
+                        date: null,
+                        time: timeToDisplay,
+                        price: null
+                    });
                 }
                 if (tooltipModel.dataPoints && !(moment(tooltipModel.dataPoints[0].label, "hh:mm A").format('mm') % 5)) {
-                    setDisplayPrice((Math.round(tooltipModel.dataPoints[0].value*100)/100).toFixed(2));
-                    setDisplayTime(tooltipModel.dataPoints[0].label);
+                    const price = (Math.round(tooltipModel.dataPoints[0].value*100)/100).toFixed(2);
+                    const candle = tooltipModel.dataPoints[0].label.split(' - ');
+                    setDisplay({
+                        date: candle[1],
+                        time: candle[0],
+                        price: price
+                    });
                 }
             }
         },
         hover: {
-            mode: 'nearest',
-            intersect: true
+            mode: 'x'
         },
         scales: {
             yAxes: [{
@@ -183,24 +204,24 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
 
     const handleClick = event => {
         setOption(event.target.value);
-    }
+    };
 
     return (
         <>
             <Container>
             <Row>
-                <small>{date}</small>
+                <small>{display.date ? display.date : date}</small>
             </Row>
             <Row>
                 <h3 className={`mb-0 ${currentChange.type === '+' ? 'pos' : 'neg'}`}>
-                    ${displayPrice ? displayPrice : lastTrade.price}
+                    ${display.price ? display.price : lastTrade.price}
                 </h3>
             </Row>
             <Row>
                 <small className={currentChange.type === '+' ? 'pos' : 'neg'}>
                     {currentChange.message}
                 </small>
-                <small className='ml-1'>{displayTime ? displayTime : lastTrade.time}</small>
+                <small className='ml-1'>{display.time ? display.time : lastTrade.time}</small>
             </Row>
             </Container>
             <Line

@@ -31,9 +31,19 @@ export const setWeekChart = (ticker) => {
     return function(dispatch) {
         getWeekPricesRequest(ticker)
             .then(data => {
+                dispatch(getLabelsAndSetTimes(data))
                 dispatch(getPricesAndSetPrices(data));
-                dispatch(setDate(moment(data[0].date).format('MMM D, YYYY')));
+                dispatch(setDate(moment(data[data.length-1].date).format('MMM D, YYYY')));
             })
+    }
+};
+
+export const getLabelsAndSetTimes = (data) => {
+    return function(dispatch) {
+        const times = data.map(candle => {
+            return moment(candle.datetime).format('hh:mm A - MMM D, YYYY')
+        })
+        dispatch(setTimes(times));
     }
 };
 
@@ -72,9 +82,9 @@ export const setDate = (date) => {
 export const getPricesAndSetPrices = (data) => {
     return function(dispatch) {
         let prevPrice;
-        const prices = data.map(intradayTrade => {
-            if (intradayTrade.close) {
-                prevPrice = intradayTrade.close
+        const prices = data.map(candle => {
+            if (candle.close) {
+                prevPrice = candle.close
                 return prevPrice
             } else {
                 return prevPrice
