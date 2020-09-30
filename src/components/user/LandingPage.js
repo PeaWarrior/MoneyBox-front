@@ -1,6 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { Container, Row, Col } from 'react-bootstrap';
 import logo from '../../logo.png';
 import Login from './Login';
 

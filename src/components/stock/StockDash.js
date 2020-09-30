@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 import ActivityForm from '../activity/ActivityForm';
 import StockChart from './StockChart';
 
@@ -8,7 +8,7 @@ export default function StockDash({ name, ticker, fundamental }) {
 
     useEffect(() => {
         setCurrentPrice(fundamental.lastPrice);
-    }, [ticker]);
+    }, [ticker, fundamental.lastPrice]);
 
     return (
         <Container>

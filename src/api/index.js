@@ -91,3 +91,12 @@ export const getIntradayPricesRequest = (query, openPrice) => {
     })
     .then(resp => resp.json())
 }
+
+export const getWeekPricesRequest = (query) => {
+    return fetch(`http://localhost:3001/week/${query}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.token}`
+        }
+    })
+    .then(resp => resp.json())
+}

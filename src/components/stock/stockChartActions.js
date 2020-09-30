@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { getIntradayPricesRequest } from '../../api';
+import { getIntradayPricesRequest, getWeekPricesRequest } from '../../api';
 
 export const setIntradayChart = (ticker, openPrice) => {
     return function(dispatch) {
@@ -26,6 +26,18 @@ export const setIntradayTimes = () => {
         dispatch(setTimes(intradayTimes));
     }
 };
+
+export const setWeekChart = (ticker) => {
+    return function(dispatch) {
+        getWeekPricesRequest(ticker)
+            .then(data => {
+                dispatch(getPricesAndSetPrices(data));
+                dispatch(setDate(moment(data[0].date).format('MMM D, YYYY')));
+            })
+    }
+};
+
+// REDUCER METHODS
 
 export const setTimes = (times) => {
     return {
@@ -61,8 +73,8 @@ export const getPricesAndSetPrices = (data) => {
     return function(dispatch) {
         let prevPrice;
         const prices = data.map(intradayTrade => {
-            if (intradayTrade.average) {
-                prevPrice = intradayTrade.average
+            if (intradayTrade.close) {
+                prevPrice = intradayTrade.close
                 return prevPrice
             } else {
                 return prevPrice

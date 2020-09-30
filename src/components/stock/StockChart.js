@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Chart, Line } from 'react-chartjs-2';
-import { Row, Container } from 'react-bootstrap';
+import { Row, Container, Button } from 'react-bootstrap';
 import moment from 'moment';
 import { calculateChange } from './stockActions';
-import { setIntradayChart, setPrices, setBorderColor } from './stockChartActions';
+import { setIntradayChart, setWeekChart, setPrices, setBorderColor } from './stockChartActions';
 
 export default function StockChart({ ticker, openPrice, lastPrice }) {
     const dispatch = useDispatch();
@@ -24,14 +24,17 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
                 case 'intraday':
                     dispatch(setIntradayChart(ticker, openPrice));
                     break;
+                case 'week':
+                    dispatch(setWeekChart(ticker));
+                    break;
                 default:
                     break;
             }
         }
-    }, [option, ticker]);
+    }, [option, ticker, openPrice, dispatch]);
 
     useEffect(() => {
-        if (ticker) {
+        if (ticker && moment().hour() < 16) {
             const socket = new WebSocket(`wss://ws.finnhub.io?token=${process.env.REACT_APP_FINNHUBB_API_KEY}`);
 
             socket.addEventListener('open', function (event) {
@@ -66,22 +69,24 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
     useEffect(() => {
         setLastTrade(prevState => ({
             price: lastPrice,
-            time: moment().format('hh:mm A')
+            time: moment().hour() <= 16 ? moment().format('hh:mm A') : '04:00 PM'
         }));
         setCurrentChange(dispatch(calculateChange(lastPrice, openPrice)));
-    }, [ticker])
+    }, [ticker, lastPrice, openPrice, dispatch])
 
     useEffect(() => {
-        // if (graphData.datasets[0].data.length) {
-            const updatedPrices = [...graphData.datasets[0].data];
+        const updatedPrices = [...graphData.datasets[0].data];
+        if (updatedPrices[updatedPrices.length-1] === lastTrade.price) {
             updatedPrices[updatedPrices.length-1] = lastTrade.price;
             dispatch(setPrices(updatedPrices));
-            const borderColor = lastTrade.price > openPrice ? '#00ad00' : 'red';
-            if (graphData.datasets[0].borderColor !== borderColor) {
-                dispatch(setBorderColor(borderColor));
-            }
-        // }
-    }, [lastTrade.price]);
+        }
+
+        const borderColor = lastTrade.price > openPrice ? '#00ad00' : 'red';
+        if (graphData.datasets[0].borderColor !== borderColor) {
+            dispatch(setBorderColor(borderColor));
+        }
+
+    }, [lastTrade.price, graphData.datasets, openPrice, dispatch]);
 
     useEffect(() => {
         if (option === 'intraday' && graphData.datasets[0].data.length) {
@@ -89,14 +94,14 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
             dispatch(setPrices(updatedPrices));
             setDisplayTime(moment().format('hh:mm A'));
         }
-    }, [lastTrade.time, option])
+    }, [lastTrade.time, option, dispatch])
 
     useEffect(() => {
         setCurrentChange(dispatch(calculateChange(
             (displayPrice ? displayPrice : lastTrade.price), 
             openPrice
             )));
-    }, [displayPrice]);
+    }, [displayPrice, dispatch]);
 
     useEffect(() => {
         const verticleLinePlugin = {
@@ -138,8 +143,9 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
             intersect: false,
             custom: (tooltipModel) => {
                 if (tooltipModel.body === undefined) {
-                    const currentTime = moment().format('hh:mm A');
-                    setDisplayTime(currentTime);
+                    const currentTime = moment()
+                    const timeToDisplay = currentTime.hour() <= 16 ? currentTime.format('hh:mm A') : '04:00 PM'
+                    setDisplayTime(timeToDisplay);
                     setDisplayPrice(null);
                     return;
                 }
@@ -175,6 +181,10 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
         }
     }
 
+    const handleClick = event => {
+        setOption(event.target.value);
+    }
+
     return (
         <>
             <Container>
@@ -197,6 +207,14 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
                 data={graphData}
                 options={graphOptions}
             />
+            <Row>
+                <Button onClick={handleClick} variant='link' value="intraday">1D</Button>
+                <Button onClick={handleClick} variant='link' value="week">1W</Button>
+                <Button onClick={handleClick} variant='link' value="monthly">1M</Button>
+                <Button onClick={handleClick} variant='link' value="tri-monthly">3M</Button>
+                <Button onClick={handleClick} variant='link' value="anually">1Y</Button>
+                <Button onClick={handleClick} variant='link' value="penta-annually">5Y</Button>
+            </Row>
         </>
     )
 }
