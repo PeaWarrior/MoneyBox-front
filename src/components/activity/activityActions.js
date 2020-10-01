@@ -1,17 +1,19 @@
 import { createNewActivityRequest, sellActivityRequest } from '../../api';
 import { setCurrentPortfolio } from '../portfolio/portfolioActions';
+import { setStocks } from '../stock/stockActions';
 
 export const createAndFetchNewActivity = (form) => {
     return function(dispatch) {
         if (form.category === 'Sell') {
             sellActivityRequest(form)
             .then(data => {
-                dispatch(setCurrentPortfolio(data.portfolio))
+                dispatch(setStocks(data.portfolio.stocks));
+                dispatch(setCurrentPortfolio(data.portfolio));
             })
         } else {
             createNewActivityRequest(form)
             .then(data => {
-                dispatch(createActivity(data.activity))
+                dispatch(createActivity(data.activity));
                 dispatch(clearActivityForm());
             })
         }

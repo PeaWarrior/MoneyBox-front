@@ -6,12 +6,26 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-hr {
-    margin: 0 0 1rem 0;
-}
-
 body {
     font-family: 'Montserrat', sans-serif;
+}
+
+*:focus {
+    outline:none !important
+}
+
+.btn:focus, .btn:active, .btn:hover {
+    outline: none !important;
+    box-shadow: none;
+    text-decoration: none;
+ }
+
+h2 {
+    color: teal;
+}
+
+hr {
+    margin: 0 0 1rem 0;
 }
 
 nav {
@@ -34,7 +48,23 @@ nav {
 
 .active-chart {
     font-weight: bold;
-    text-decoration: underline;
+    text-decoration: underline teal;
+}
+
+.selected {
+    color: teal;
+}
+
+.selected:hover {
+    color: teal;
+}
+
+.portfolio-options {
+    color: rgb(17, 185, 185);
+}
+
+.portfolio-options:hover {
+    color: teal;
 }
 
 .box {

@@ -24,9 +24,10 @@ export default function PortfolioCard(props) {
                     </Col>
                     <Col>
                         <small>Realized Gains/Losses</small>
-                        <h6 className={realized > 0 ? 'pos' : 'neg'}>${realized}</h6>
+                        <h6 className={realized >= 0 ? 'pos' : 'neg'}>${realized}</h6>
                     </Col>
-                    <Col></Col>
+                    <Col>
+                    </Col>
                 </Row>
                 <Row>
                     <Col>
@@ -40,7 +41,7 @@ export default function PortfolioCard(props) {
                         <h6>${costBasis}</h6>
                     </Col>
                     <Col>
-                        {location.pathname === '/' ? <Button onClick={handleClick} >View Portfolio</Button> : null}
+                        {location.pathname === '/' ? <Button variant="info" onClick={handleClick} >View Portfolio</Button> : null}
                     </Col>
                 </Row>
             </Card.Header>

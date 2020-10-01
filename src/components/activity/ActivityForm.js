@@ -50,7 +50,7 @@ export default function ActivityForm({ category, currentPrice, ticker, name }) {
     return (
         <>
         <Button 
-            variant="primary" 
+            variant="info" 
             onClick={handleShow}
             className="mr-3"
         >

@@ -32,6 +32,13 @@ const reducer = (state = defaultState, action) => {
                 portfolios: [],
                 currentPortfolio: {},
             }
+        case 'UPDATE_CURRENT_PORTFOLIO_STOCKS':
+            return {
+                ...state,
+                currentPortfolio: {
+                    stocks: [...action.payload]
+                }
+            }
         default:
             return state;
     }

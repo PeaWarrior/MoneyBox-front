@@ -1,21 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, InputGroup, Form, Col, Row, Container } from 'react-bootstrap';
 import { createAndFetchNewActivity } from './activityActions';
 
-export default function BuyForm({ currentPrice, ticker, name }) {
+export default function BuyForm({ ticker, name }) {
     const dispatch = useDispatch();
-    const { portfolios } = useSelector(state => state.portfolio); 
+    const { portfolios } = useSelector(state => state.portfolio);
+    const stock = useSelector(state => state.stock.stock);
     const [form, setForm] = useState({
         portfolio_id: portfolios.length ? portfolios[0].id : null,
         category: 'Buy',
         name: name,
         ticker: ticker,
-        price: currentPrice,
+        price: stock.fundamental.lastPrice,
         shares: 0,
         date: moment().format('YYYY-MM-DD')
     });
+
+    useEffect(() => {
+        setForm({
+            ...form,
+            price: stock.fundamental.lastPrice
+        })
+    }, [stock])
 
     const handleClickAddActivity = event => {
         event.preventDefault();
@@ -45,10 +53,15 @@ export default function BuyForm({ currentPrice, ticker, name }) {
     const renderRemainingCash = () => {
         const portfolio = portfolios.find((portfolio => portfolio.id === parseInt(form.portfolio_id)));
         return portfolio.cash - form.price * form.shares
+    };
+
+    const portfolioCash = () => {
+        const portfolio = portfolios.find((portfolio => portfolio.id === parseInt(form.portfolio_id)));
+        return portfolio.cash
     }
 
     return (
-        <Form onSubmit={handleClickAddActivity} className="buy-form pt-3">
+        <Form onSubmit={handleClickAddActivity} className="buy-form pt-4 pb-4">
             <Container>
                 <Form.Group as={Col}>
                     <Col>
@@ -72,8 +85,8 @@ export default function BuyForm({ currentPrice, ticker, name }) {
 
                 <Form.Group as={Col} >
                     <Row>
-                        <Form.Label column md={8}>Shares</Form.Label>
-                        <Col md={4}>
+                        <Form.Label column md={6}>Shares</Form.Label>
+                        <Col md={6}>
                             <Form.Control 
                                 onChange={handleChange} 
                                 name='shares' 
@@ -140,7 +153,10 @@ export default function BuyForm({ currentPrice, ticker, name }) {
                         <Form.Label column md={5} className="text-right">
                             <strong>
                                 {portfolios.length ? 
-                                    `${(Math.round((renderRemainingCash())*100)/100).toFixed(2)}`
+                                    (renderRemainingCash() < 0 ? 
+                                        `-$${Math.abs((Math.round((renderRemainingCash())*100)/100).toFixed(2))}`
+                                        : 
+                                        `$${(Math.round((renderRemainingCash())*100)/100).toFixed(2)}`)
                                     :
                                     '$0.00'
                                 }
@@ -154,7 +170,7 @@ export default function BuyForm({ currentPrice, ticker, name }) {
                         block
                         variant="info" 
                         type="submit" 
-                        disabled={portfolios.length && (form.price * form.shares) > renderRemainingCash() ? false : true}
+                        disabled={portfolios.length && (form.price * form.shares) <= portfolioCash() ? false : true}
                     >
                         Buy
                     </Button>

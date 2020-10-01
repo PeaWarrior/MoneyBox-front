@@ -58,3 +58,9 @@ export const clearPortfolios = () => {
     };
 };
 
+export const updateCurrentPortfolioStocks = (stocks) => {
+    return {
+        type: 'UPDATE_CURRENT_PORTFOLIO_STOCKS',
+        payload: stocks
+    }
+}

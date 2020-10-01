@@ -32,7 +32,13 @@ export default function PortfolioListings() {
     return (
         <Container className="mt-5">
             <PortfolioForm />
-            {renderPortfolios()}
+            {portfolios.length ? 
+                renderPortfolios()
+                :
+                <Container>
+                    'Create a new portfolio to get started!'
+                </Container>
+            }
         </Container>
     )
 }

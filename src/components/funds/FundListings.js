@@ -35,21 +35,24 @@ export default function FundListings() {
             <Accordion>
                     <Container className="pb-1">
                         <Row>
-                            <Col>
-                                <h2>Transfers</h2>
-                            </Col>
-                                <Accordion.Toggle 
-                                    onClick={toggleShow}
-                                    as={Button} 
-                                    variant="link" 
-                                    eventKey="0"
-                                >
-                                    <h3>{show ? 
+                            <Accordion.Toggle 
+                                onClick={toggleShow}
+                                as={Button}
+                                block 
+                                variant="link" 
+                                eventKey="0"
+                            >
+                            <Row>
+                                <Col><h2>Transfers</h2></Col>
+                                <Col>
+                                    <h2>{show ? 
                                         <i className="fas fa-chevron-up"></i>
                                         :
                                         <i className="fas fa-chevron-down"></i>
-                                    }</h3>
-                                </Accordion.Toggle>
+                                    }</h2>
+                                </Col>
+                            </Row>
+                            </Accordion.Toggle>
                         </Row>
                         <hr/>
                     </Container>

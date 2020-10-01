@@ -24,7 +24,7 @@ export default function PortfolioForm() {
       
     return (
         <>
-        <Button variant="primary" onClick={handleShow}>
+        <Button variant="info" onClick={handleShow}>
             New Portfolio
         </Button>
     

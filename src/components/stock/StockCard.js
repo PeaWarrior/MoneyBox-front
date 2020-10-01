@@ -87,6 +87,7 @@ export default function StockCard({ id, name, ticker, shares, costBasis, average
                                 <Row>
                                     <Accordion.Toggle 
                                         as={Button} 
+                                        className="btn-info"
                                         eventKey="0" 
                                     >
                                         Transactions
