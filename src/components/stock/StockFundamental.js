@@ -13,44 +13,59 @@ export default function StockFundamental() {
                 <Card.Body>
                     <Container>
                         <Row>
-                            <Col md={3}>
-                                <Row><small>Open</small></Row>
-                                <Row><p>${fundamental.openPrice}</p></Row>
+                            <Col>
+                                <div>
+                                    <small>Open</small>
+                                    <p>${fundamental.openPrice}</p>
+                                </div>
+                                <div>
+                                    <small>Previous Close</small>
+                                    <p>${fundamental.closePrice}</p>
+                                </div>
                             </Col>
-                            <Col md={3}>
-                                <Row><small>Today's High</small></Row>
-                                <Row><p>${fundamental.highPrice}</p></Row>
+                            <Col>
+                                <div>
+                                    <small>Today's High</small>
+                                    <p>${fundamental.highPrice}</p>
+                                </div>
+                                <div>
+                                    <small>Today's Low</small>
+                                    <p>${fundamental.lowPrice}</p>
+                                </div>
                             </Col>
-                            <Col md={3}>
-                                <Row><small>P/E Ratio</small></Row>
-                                <Row><p>{fundamental.peRatio}</p></Row>
+                            <Col>
+                                <div>
+                                    <small>52 Week High</small>
+                                    <p>${fundamental.high52}</p>
+                                </div>
+                                <div>
+                                    <small>52 Week Low</small>
+                                    <p>${fundamental.low52}</p>
+                                </div>
                             </Col>
-                            <Col md={3}>
-                                <Row><small>Ex-dividend Date</small></Row>
-                                <Row>
+                            <Col>
+                                <div>
+                                    <small>P/E Ratio</small>
+                                    <p>{fundamental.peRatio}</p>
+                                </div>
+                                <div>
+                                    <small>Dividend Yield</small>
+                                    <p>{dividend.yield}%</p>
+                                </div>
+                            </Col>
+                            <Col>
+                                <div>
+                                    <small>Ex-dividend Date</small>
                                     {dividend.exDate ? 
-                                    <p>{moment(dividend.exDate).format("MMMM DD, YYYY")}</p>
-                                    :
-                                    <p>N/A</p>}
-                                </Row>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={3}>
-                                <Row><small>Previous Close</small></Row>
-                                <Row><p>${fundamental.closePrice}</p></Row>
-                            </Col>
-                            <Col md={3}>
-                                <Row><small>Today's Low</small></Row>
-                                <Row><p>${fundamental.lowPrice}</p></Row>
-                            </Col>
-                            <Col md={3}>
-                                <Row><small>Dividend Yield</small></Row>
-                                <Row><p>{dividend.yield}%</p></Row>
-                            </Col>
-                            <Col md={3}>
-                                <Row><small>Annual Dividend</small></Row>
-                                <Row><p>${dividend.amountPerYear}</p></Row>
+                                        <p>{moment(dividend.exDate).format("MMMM DD, YYYY")}</p>
+                                        :
+                                        <p>N/A</p>
+                                    }
+                                </div>
+                                <div>
+                                    <small>Annual Dividend</small>
+                                    <p>${dividend.amountPerYear}</p>
+                                </div>
                             </Col>
                         </Row>
                     </Container>
