@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Chart, Line } from 'react-chartjs-2';
-import { Row, Container, Button } from 'react-bootstrap';
+import { Row, Container, Button, Col } from 'react-bootstrap';
 import moment from 'moment';
 import { calculateChange } from './stockActions';
 import { setIntradayChart, setWeekChart, setHistoricalChart, setPrices, setBorderColor, verticleLinePlugin } from './stockChartActions';
@@ -171,18 +171,6 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
                         });
                     }
                 }
-
-                // if (tooltipModel.body) {
-                //     const price = (Math.round(tooltipModel.dataPoints[0].value*100)/100).toFixed(2);
-                //     const candle = tooltipModel.dataPoints[0].label.split(' - ');
-                //     if (!(moment(tooltipModel.dataPoints[0].label, "hh:mm A").format('mm') % 5)) {
-                //         setDisplay({
-                //             date: candle[1],
-                //             time: candle[0],
-                //             price: price
-                //         });
-                //     }
-                // }
             }
         },
         hover: {
@@ -194,6 +182,7 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
                     display: false,
                 },
                 gridLines: {
+                    display: false,
                     drawTicks: false,
                     drawOnChartArea: false,
                 }
@@ -203,6 +192,7 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
                     display: false,
                 },
                 gridLines: {
+                    lineWidth: 3,
                     drawTicks: false,
                     drawOnChartArea: false
                 }
@@ -217,31 +207,36 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
     return (
         <>
             <Container>
-            <Row>
-                <small>{display.date ? display.date : date}</small>
-            </Row>
-            <Row>
-                <StockPriceAnimation color={currentChange.type === '+' ? 'green' : 'red'}price={display.price ? display.price : lastTrade.price} />
-            </Row>
-            <Row>
-                <small className={currentChange.type === '+' ? 'pos' : 'neg'}>
-                    {currentChange.message}
-                </small>
-                <small className='ml-1'>{display.time ? display.time : lastTrade.time}</small>
-            </Row>
+                <Row>
+                    <small>{display.date ? display.date : date}</small>
+                </Row>
+                <Row>
+                    <StockPriceAnimation 
+                        color={currentChange.type === '+' ? 'green' : 'red'}
+                        price={display.price ? display.price : lastTrade.price} 
+                    />
+                </Row>
+                <Row>
+                    <small className={currentChange.type === '+' ? 'pos' : 'neg'}>
+                        {currentChange.message}
+                    </small>
+                    <small className='ml-1'>
+                        {display.time ? display.time : lastTrade.time}
+                    </small>
+                </Row>
             </Container>
-            <Line
-                data={graphData}
-                options={graphOptions}
-            />
-            <Row>
-                <Button onClick={handleClick} variant='link' value="intraday">1D</Button>
-                <Button onClick={handleClick} variant='link' value="week">1W</Button>
-                <Button onClick={handleClick} variant='link' value="month">1M</Button>
-                <Button onClick={handleClick} variant='link' value="3month">3M</Button>
-                <Button onClick={handleClick} variant='link' value="year">1Y</Button>
-                <Button onClick={handleClick} variant='link' value="5year">5Y</Button>
-            </Row>
+                <Line
+                    data={graphData}
+                    options={graphOptions}
+                />
+                <Row>
+                    <Button onClick={handleClick} variant='link' className={option === 'intraday' ? 'active-chart' : null} value="intraday">1D</Button>
+                    <Button onClick={handleClick} variant='link' className={option === 'week' ? 'active-chart' : null} value="week">1W</Button>
+                    <Button onClick={handleClick} variant='link' className={option === 'month' ? 'active-chart' : null} value="month">1M</Button>
+                    <Button onClick={handleClick} variant='link' className={option === '3month' ? 'active-chart' : null} value="3month">3M</Button>
+                    <Button onClick={handleClick} variant='link' className={option === 'year' ? 'active-chart' : null} value="year">1Y</Button>
+                    <Button onClick={handleClick} variant='link' className={option === '5year' ? 'active-chart' : null} value="5year">5Y</Button>
+                </Row>
         </>
     )
 }

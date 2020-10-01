@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
-h2, h3 {
-    margin: 0
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 hr {
@@ -26,12 +28,17 @@ nav {
     color: #8ec4c0;
 }
 
-.box {
-    border: 1px solid black
+.btn-link {
+    color: teal
 }
 
-.stockName {
-    /* margin: 0 */
+.active-chart {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.box {
+    border: 1px solid black
 }
 
 .news-image {
@@ -44,30 +51,16 @@ nav {
 
 .pos {
     color: green;
-    /* animation: rotate-up 0.5s; */
 }
 
 .neg {
     color: red;
-    /* animation: rotate-up 0.5s; */
 }
 
-.animate {
-    animation: rotate-up 0.5s;
+.buy-form {
+    border: 1px solid rgb(207, 195, 195);
+    border-radius: 5px;
 }
-
-@keyframes rotate-up {
-    0%{
-        transform: translateY(-50px);
-    }
-    50%{
-        transform: translateY(50px);
-    }
-    100%{
-        transform: translateY(0px);
-    }
-}
-
 
 .form-container {
     padding: 4rem;
@@ -78,7 +71,6 @@ nav {
 
 .form-container h2 {
     font-family: 'Titillium Web', serif;
-    /* font-size: clamp(18px, 15vw, 36px); */
     font-weight: 800;
     color: #408884;
 }
@@ -91,7 +83,6 @@ nav {
     width: 360px;
 }
 
-/* sections */
 .section {
     position: relative;
     height: 100vh;
@@ -99,8 +90,6 @@ nav {
     justify-content: center;
     align-items: center;
 }
-
-/* hero section */
 
 .hero-section {
     background-color: #ffffff;

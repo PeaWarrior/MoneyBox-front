@@ -13,6 +13,6 @@ export default function StockPriceAnimation({price, color}) {
       });
 
     return (
-        <animated.h3 style={props}>{price}</animated.h3>
+        <animated.h3 style={props}>${price}</animated.h3>
     )
 }

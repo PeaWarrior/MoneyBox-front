@@ -5,7 +5,6 @@ const defaultState = {
 const reducer = (state = defaultState, action) => {
     switch (action.type) {
         case 'CREATE_ACTIVITY':
-            console.log(state.activities)
             return {
                 ...state,
                 activities: [
