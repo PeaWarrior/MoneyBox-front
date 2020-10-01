@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Form, Container, Row, Col, Button, InputGroup } from 'react-bootstrap';
+import moment from 'moment';
+import { createFund } from '../funds/fundActions';
 
 export default function FundForm() {
+    const dispatch = useDispatch();
     const { currentPortfolio } = useSelector(state => state.portfolio);
     const [form, setForm] = useState({
         portfolio_id: currentPortfolio.id,
         category: 'Deposit',
         amount: 0,
+        date: moment().format('YYYY-MM-DD')
     });
+
+    console.log(currentPortfolio)
+    useEffect(() => {
+        setForm({
+            ...form,
+            portfolio_id: currentPortfolio.id
+        })
+    }, [currentPortfolio])
 
     const handleChange = event => {
         event.persist();
@@ -19,11 +31,12 @@ export default function FundForm() {
     };
 
     const handleSubmit = event => {
-
+        event.preventDefault();
+        dispatch(createFund(form));
     };
 
     return (
-        <Form className="buy-form pt-4 pb-3">
+        <Form className="buy-form pt-4 pb-3" onSubmit={handleSubmit}>
             <Container>
                 <Form.Group as={Col}>
                     <Col>
@@ -35,14 +48,7 @@ export default function FundForm() {
                 <Form.Group as={Col} >
                     <Row>
                         <Form.Label column md={5}>Portfolio</Form.Label>
-                        <Col md={7}>
-                            <Form.Control
-                                onChange={handleChange}
-                                as="select"
-                                name="portfolio_id"
-                            >
-                            </Form.Control>
-                        </Col>
+                        <Form.Label column md={7} className="text-right">{currentPortfolio.name}</Form.Label>
                     </Row>
                 </Form.Group>
 
@@ -55,6 +61,22 @@ export default function FundForm() {
                                 <Form.Control onChange={handleChange} name='amount' type="number" placeholder="Amount" value={form.amount} />
                             </InputGroup>
                         {/* <Form.Text muted>Price must not be negative.</Form.Text> */}
+                        </Col>
+                    </Row>
+                </Form.Group>
+
+                <Form.Group as={Col} >
+                    <Row>
+                        <Form.Label column md={5}>Type</Form.Label>
+                        <Col md={7}>
+                            <Form.Control
+                                onChange={handleChange}
+                                as="select"
+                                name="category"
+                            >
+                                <option>Deposit</option>
+                                <option>Withdrawal</option>
+                            </Form.Control>
                         </Col>
                     </Row>
                 </Form.Group>
@@ -77,25 +99,22 @@ export default function FundForm() {
                     </Row>
                 </Form.Group>
                 <hr/>
-                <Form.Group as={Col}>
-                    <Row>
-
-                        <Form.Label column>
-                            <strong>Total:</strong>
-                        </Form.Label>
-                        <Form.Label column className="text-right">
-                            <strong>${(Math.round((form.price * form.shares)*100)/100).toFixed(2)}</strong>
-                        </Form.Label>
-                    </Row>
-                </Form.Group>
 
                 <Form.Group as={Col}>
                     <Row>
                         <Form.Label column md={7}>
-                            <strong>Remaining Cash:</strong>
+                            <strong>Balance:</strong>
                         </Form.Label>
                         <Form.Label column md={5} className="text-right">
-                            
+                            ${currentPortfolio.cash}
+                            <br/>
+                            {form.amount > 0 ? 
+                            <small>
+                                {form.category === 'Deposit' ? `+` : `-`}${form.amount}
+                            </small>
+                            :
+                            <br/>
+                        }
                         </Form.Label>
                     </Row>
                 </Form.Group>
@@ -106,7 +125,7 @@ export default function FundForm() {
                         variant="info" 
                         type="submit" 
                     >
-                        Buy
+                        {form.category}
                     </Button>
                 </Form.Group>
             </Container>

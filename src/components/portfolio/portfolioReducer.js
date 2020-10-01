@@ -25,7 +25,9 @@ const reducer = (state = defaultState, action) => {
         case 'SET_CURRENT_PORTFOLIO':
             return {
                 ...state,
-                currentPortfolio: action.payload
+                currentPortfolio: {
+                    ...action.payload
+                }
             }
         case 'CLEAR_PORTFOLIOS':
             return {
@@ -36,6 +38,7 @@ const reducer = (state = defaultState, action) => {
             return {
                 ...state,
                 currentPortfolio: {
+                    ...state.currentPortfolio,
                     stocks: [...action.payload]
                 }
             }

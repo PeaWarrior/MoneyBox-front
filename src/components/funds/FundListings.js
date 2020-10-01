@@ -32,16 +32,9 @@ export default function FundListings() {
 
     return (
         <Container className="mb-5">
-            <Accordion>
                     <Container className="pb-1">
                         <Row>
-                            <Accordion.Toggle 
-                                onClick={toggleShow}
-                                as={Button}
-                                block 
-                                variant="link" 
-                                eventKey="0"
-                            >
+                            
                             <Row>
                                 <Col><h2>Transfers</h2></Col>
                                 <Col>
@@ -52,17 +45,13 @@ export default function FundListings() {
                                     }</h2>
                                 </Col>
                             </Row>
-                            </Accordion.Toggle>
                         </Row>
                         <hr/>
                     </Container>
 
-                    <Accordion.Collapse eventKey="0">
                         <Card.Body>
                             {renderFunds()}
                         </Card.Body>
-                    </Accordion.Collapse>
-            </Accordion>
         </Container>
     )
 }

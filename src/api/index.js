@@ -83,7 +83,7 @@ export const getStockQuotesRequest = (queries) => {
 };
 
 export const getIntradayPricesRequest = (query, openPrice) => {
-    return fetch(`http://localhost:3001/intraday/${query}`, {
+    return fetch(`${URL}intraday/${query}`, {
         headers: {
             'Authorization': `Bearer ${localStorage.token}`,
             'openPrice': openPrice
@@ -93,7 +93,7 @@ export const getIntradayPricesRequest = (query, openPrice) => {
 }
 
 export const getWeekPricesRequest = (query) => {
-    return fetch(`http://localhost:3001/week/${query}`, {
+    return fetch(`${URL}week/${query}`, {
         headers: {
             'Authorization': `Bearer ${localStorage.token}`
         }
@@ -102,12 +102,27 @@ export const getWeekPricesRequest = (query) => {
 }
 
 export const getHistoricalPricesRequest = (query, periodType, period) => {
-    return fetch(`http://localhost:3001/historical/${query}`, {
+    return fetch(`${URL}historical/${query}`, {
         headers: {
             'Authorization': `Bearer ${localStorage.token}`,
             periodType: periodType,
             period: period
         }
+    })
+    .then(resp => resp.json())
+}
+
+// FUND REQUESTS
+
+export const createFundRequest = (form) => {
+    const category = form.category === 'Deposit' ? 'deposit' : 'withdraw'
+    return fetch(`${URL}${category}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(form)
     })
     .then(resp => resp.json())
 }
