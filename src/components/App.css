@@ -44,11 +44,30 @@ nav {
 
 .pos {
     color: green;
+    /* animation: rotate-up 0.5s; */
 }
 
 .neg {
     color: red;
+    /* animation: rotate-up 0.5s; */
 }
+
+.animate {
+    animation: rotate-up 0.5s;
+}
+
+@keyframes rotate-up {
+    0%{
+        transform: translateY(-50px);
+    }
+    50%{
+        transform: translateY(50px);
+    }
+    100%{
+        transform: translateY(0px);
+    }
+}
+
 
 .form-container {
     padding: 4rem;

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { getIntradayPricesRequest, getWeekPricesRequest } from '../../api';
+import { getIntradayPricesRequest, getWeekPricesRequest, getMonthPricesRequest } from '../../api';
 
 export const setIntradayChart = (ticker, openPrice) => {
     return function(dispatch) {
@@ -30,6 +30,17 @@ export const setIntradayTimes = () => {
 export const setWeekChart = (ticker) => {
     return function(dispatch) {
         getWeekPricesRequest(ticker)
+            .then(data => {
+                dispatch(getLabelsAndSetTimes(data))
+                dispatch(getPricesAndSetPrices(data));
+                dispatch(setDate(moment(data[data.length-1].date).format('MMM D, YYYY')));
+            })
+    }
+};
+
+export const setMonthChart = (ticker, period = 1) => {
+    return function(dispatch) {
+        getMonthPricesRequest(ticker, period)
             .then(data => {
                 dispatch(getLabelsAndSetTimes(data))
                 dispatch(getPricesAndSetPrices(data));
@@ -91,5 +102,30 @@ export const getPricesAndSetPrices = (data) => {
             }
         });
         dispatch(setPrices(prices));
+    }
+};
+
+export const verticleLinePlugin = (chart) => {
+    return function(dispatch) {
+        return {
+            afterDraw: function(chart) {
+                if (chart.tooltip._active && chart.tooltip._active.length) {
+                    const activePoint = chart.controller.tooltip._active[0];
+                    const ctx = chart.ctx;
+                    const x = activePoint.tooltipPosition().x;
+                    const topY = chart.legend.bottom;
+                    const bottomY = chart.chartArea.bottom;
+        
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(x, topY);
+                    ctx.lineTo(x, bottomY);
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = 'grey';
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            }
+        }
     }
 }

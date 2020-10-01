@@ -4,18 +4,20 @@ import { Chart, Line } from 'react-chartjs-2';
 import { Row, Container, Button } from 'react-bootstrap';
 import moment from 'moment';
 import { calculateChange } from './stockActions';
-import { setIntradayChart, setWeekChart, setPrices, setBorderColor } from './stockChartActions';
+import { setIntradayChart, setWeekChart, setMonthChart, setPrices, setBorderColor, verticleLinePlugin } from './stockChartActions';
+import StockPriceAnimation from './StockPriceAnimation';
+
 
 export default function StockChart({ ticker, openPrice, lastPrice }) {
     const { date, graphData } = useSelector(state => state.stockChart);
     const dispatch = useDispatch();
-
+    
     const [option, setOption] = useState('intraday');
     const [lastTrade, setLastTrade] = useState({
         price: lastPrice,
         time: moment().format('hh:mm A')
     });
-
+    
     const [currentChange, setCurrentChange] = useState({});
     const [display, setDisplay] = useState({
         date: null,
@@ -23,6 +25,7 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
         price: null
     });
     const ws = useRef(null);
+
 
     useEffect(() => {
         if (ticker) {
@@ -32,6 +35,12 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
                     break;
                 case 'week':
                     dispatch(setWeekChart(ticker));
+                    break;
+                case 'month':
+                    dispatch(setMonthChart(ticker));
+                    break;
+                case '3month':
+                    dispatch(setMonthChart(ticker, 3));
                     break;
                 default:
                     break;
@@ -89,7 +98,7 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
 
     useEffect(() => {
         const prices = [...graphData.datasets[0].data];
-        if (prices[prices.length-1] === lastTrade.price) {
+        if (option === 'intraday' && prices[prices.length-1] !== lastTrade.price) {
             prices[prices.length-1] = lastTrade.price;
             dispatch(setPrices(prices));
         }
@@ -99,7 +108,7 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
             dispatch(setBorderColor(borderColor));
         }
 
-    }, [lastTrade.price, graphData.datasets, openPrice, dispatch]);
+    }, [lastTrade.price, openPrice, dispatch]);
 
     useEffect(() => {
         if (option === 'intraday' && graphData.datasets[0].data.length) {
@@ -114,34 +123,14 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
 
     useEffect(() => {
         const price = display.price ? display.price : lastTrade.price
-        setCurrentChange(dispatch(calculateChange(price, openPrice)));
-    }, [display.price, dispatch]);
+        setCurrentChange(dispatch(calculateChange(price, graphData.datasets[0].data[0])));
+    }, [display.price, graphData.datasets, dispatch]);
 
     useEffect(() => {
-        const verticleLinePlugin = {
-            afterDraw: function(chart, easing) {
-                if (chart.tooltip._active && chart.tooltip._active.length) {
-                    const activePoint = chart.controller.tooltip._active[0];
-                    const ctx = chart.ctx;
-                    const x = activePoint.tooltipPosition().x;
-                    const topY = chart.legend.bottom;
-                    const bottomY = chart.chartArea.bottom;
-        
-                    ctx.save();
-                    ctx.beginPath();
-                    ctx.moveTo(x, topY);
-                    ctx.lineTo(x, bottomY);
-                    ctx.lineWidth = 1;
-                    ctx.strokeStyle = 'grey';
-                    ctx.stroke();
-                    ctx.restore();
-                }
-            }
-          }
-        Chart.pluginService.register(verticleLinePlugin);
+        const plugin = dispatch(verticleLinePlugin());
+        Chart.pluginService.register(plugin);
         return () => {
-            console.log('hello')
-            Chart.pluginService.unregister(verticleLinePlugin);
+            Chart.pluginService.unregister(plugin);
         }
     }, [])
 
@@ -156,8 +145,8 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
             enabled: false,
             mode: 'index',
             intersect: false,
-            custom: (tooltipModel) => {
-                if (tooltipModel.body === undefined) {
+            custom: function(tooltipModel) {
+                if (tooltipModel.body === undefined || tooltipModel.opacity === 0) {
                     const currentTime = moment()
                     const timeToDisplay = currentTime.hour() <= 16 && currentTime.hour() > 8 ? currentTime.format('hh:mm A') : '04:00 PM'
                     setDisplay({
@@ -165,16 +154,29 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
                         time: timeToDisplay,
                         price: null
                     });
-                }
-                if (tooltipModel.dataPoints && !(moment(tooltipModel.dataPoints[0].label, "hh:mm A").format('mm') % 5)) {
+                } else {
                     const price = (Math.round(tooltipModel.dataPoints[0].value*100)/100).toFixed(2);
                     const candle = tooltipModel.dataPoints[0].label.split(' - ');
-                    setDisplay({
-                        date: candle[1],
-                        time: candle[0],
-                        price: price
-                    });
+                    if (!(moment(tooltipModel.dataPoints[0].label, "hh:mm A").format('mm') % 5)) {
+                        setDisplay({
+                            date: candle[1],
+                            time: candle[0],
+                            price: price
+                        });
+                    }
                 }
+
+                // if (tooltipModel.body) {
+                //     const price = (Math.round(tooltipModel.dataPoints[0].value*100)/100).toFixed(2);
+                //     const candle = tooltipModel.dataPoints[0].label.split(' - ');
+                //     if (!(moment(tooltipModel.dataPoints[0].label, "hh:mm A").format('mm') % 5)) {
+                //         setDisplay({
+                //             date: candle[1],
+                //             time: candle[0],
+                //             price: price
+                //         });
+                //     }
+                // }
             }
         },
         hover: {
@@ -213,9 +215,7 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
                 <small>{display.date ? display.date : date}</small>
             </Row>
             <Row>
-                <h3 className={`mb-0 ${currentChange.type === '+' ? 'pos' : 'neg'}`}>
-                    ${display.price ? display.price : lastTrade.price}
-                </h3>
+                <StockPriceAnimation color={currentChange.type === '+' ? 'green' : 'red'}price={display.price ? display.price : lastTrade.price} />
             </Row>
             <Row>
                 <small className={currentChange.type === '+' ? 'pos' : 'neg'}>
@@ -231,8 +231,8 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
             <Row>
                 <Button onClick={handleClick} variant='link' value="intraday">1D</Button>
                 <Button onClick={handleClick} variant='link' value="week">1W</Button>
-                <Button onClick={handleClick} variant='link' value="monthly">1M</Button>
-                <Button onClick={handleClick} variant='link' value="tri-monthly">3M</Button>
+                <Button onClick={handleClick} variant='link' value="month">1M</Button>
+                <Button onClick={handleClick} variant='link' value="3month">3M</Button>
                 <Button onClick={handleClick} variant='link' value="anually">1Y</Button>
                 <Button onClick={handleClick} variant='link' value="penta-annually">5Y</Button>
             </Row>

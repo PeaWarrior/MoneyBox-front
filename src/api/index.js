@@ -100,3 +100,13 @@ export const getWeekPricesRequest = (query) => {
     })
     .then(resp => resp.json())
 }
+
+export const getMonthPricesRequest = (query, period) => {
+    return fetch(`http://localhost:3001/month/${query}`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.token}`,
+            period: period
+        }
+    })
+    .then(resp => resp.json())
+}
