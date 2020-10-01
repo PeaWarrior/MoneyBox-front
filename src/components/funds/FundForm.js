@@ -106,7 +106,7 @@ export default function FundForm() {
                             ${currentPortfolio.cash}
                             <br/>
                             {form.amount > 0 ? 
-                            <small>
+                            <small className={form.category === 'Deposit' ? 'pos' : 'neg'}>
                                 {form.category === 'Deposit' ? `+` : `-`}${form.amount}
                             </small>
                             :
