@@ -4,7 +4,7 @@ import { Chart, Line } from 'react-chartjs-2';
 import { Row, Container, Button } from 'react-bootstrap';
 import moment from 'moment';
 import { calculateChange } from './stockActions';
-import { setIntradayChart, setWeekChart, setMonthChart, setPrices, setBorderColor, verticleLinePlugin } from './stockChartActions';
+import { setIntradayChart, setWeekChart, setHistoricalChart, setPrices, setBorderColor, verticleLinePlugin } from './stockChartActions';
 import StockPriceAnimation from './StockPriceAnimation';
 
 
@@ -37,10 +37,16 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
                     dispatch(setWeekChart(ticker));
                     break;
                 case 'month':
-                    dispatch(setMonthChart(ticker));
+                    dispatch(setHistoricalChart(ticker, 'month'));
                     break;
                 case '3month':
-                    dispatch(setMonthChart(ticker, 3));
+                    dispatch(setHistoricalChart(ticker, 'month', 3));
+                    break;
+                case 'year':
+                    dispatch(setHistoricalChart(ticker, 'year'));
+                    break;
+                case '5year':
+                    dispatch(setHistoricalChart(ticker, 'year', 5));
                     break;
                 default:
                     break;
@@ -233,8 +239,8 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
                 <Button onClick={handleClick} variant='link' value="week">1W</Button>
                 <Button onClick={handleClick} variant='link' value="month">1M</Button>
                 <Button onClick={handleClick} variant='link' value="3month">3M</Button>
-                <Button onClick={handleClick} variant='link' value="anually">1Y</Button>
-                <Button onClick={handleClick} variant='link' value="penta-annually">5Y</Button>
+                <Button onClick={handleClick} variant='link' value="year">1Y</Button>
+                <Button onClick={handleClick} variant='link' value="5year">5Y</Button>
             </Row>
         </>
     )

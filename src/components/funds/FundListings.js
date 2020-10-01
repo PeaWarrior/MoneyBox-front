@@ -22,7 +22,7 @@ export default function FundListings() {
                             <Col>Change</Col>
                         </Row>
                     </Card.Header>
-                    {funds.map(fund => <FundCard {...fund} /> )}
+                    {funds.map(fund => <FundCard key={fund.id} {...fund} /> )}
                 </Card>
             )
         } else {

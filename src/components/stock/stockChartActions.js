@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { getIntradayPricesRequest, getWeekPricesRequest, getMonthPricesRequest } from '../../api';
+import { getIntradayPricesRequest, getWeekPricesRequest, getHistoricalPricesRequest } from '../../api';
 
 export const setIntradayChart = (ticker, openPrice) => {
     return function(dispatch) {
@@ -38,9 +38,9 @@ export const setWeekChart = (ticker) => {
     }
 };
 
-export const setMonthChart = (ticker, period = 1) => {
+export const setHistoricalChart = (ticker, periodType, period = 1) => {
     return function(dispatch) {
-        getMonthPricesRequest(ticker, period)
+        getHistoricalPricesRequest(ticker, periodType, period)
             .then(data => {
                 dispatch(getLabelsAndSetTimes(data))
                 dispatch(getPricesAndSetPrices(data));

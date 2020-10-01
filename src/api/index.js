@@ -101,10 +101,11 @@ export const getWeekPricesRequest = (query) => {
     .then(resp => resp.json())
 }
 
-export const getMonthPricesRequest = (query, period) => {
-    return fetch(`http://localhost:3001/month/${query}`, {
+export const getHistoricalPricesRequest = (query, periodType, period) => {
+    return fetch(`http://localhost:3001/historical/${query}`, {
         headers: {
             'Authorization': `Bearer ${localStorage.token}`,
+            periodType: periodType,
             period: period
         }
     })
