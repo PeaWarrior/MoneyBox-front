@@ -142,7 +142,7 @@ export default function BuyForm({ currentPrice, ticker, name }) {
                                 {portfolios.length ? 
                                     `${(Math.round((renderRemainingCash())*100)/100).toFixed(2)}`
                                     :
-                                    '$0'
+                                    '$0.00'
                                 }
                             </strong>
                         </Form.Label>

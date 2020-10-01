@@ -32,8 +32,8 @@ export default function NavigationBar() {
             <Nav className="mr-auto">
                 {currentUser ? 
                 <>
-                <NavLink to="/" className="nav-link">Portfolios</NavLink>
-                <NavLink to="/search" className="nav-link">Search</NavLink>
+                <NavLink exact to="/" className="nav-link">Portfolios</NavLink>
+                <NavLink exact to="/search" className="nav-link">Search</NavLink>
                 </>
                 :
                 <></>

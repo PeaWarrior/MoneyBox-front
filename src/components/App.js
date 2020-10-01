@@ -29,16 +29,16 @@ function App() {
       }
 
       <Switch>
-        <Route exact path="/signup">
+        <Route path="/signup">
           { currentUser ? <Redirect to='/'/> : <Signup /> }
         </Route>
-        <Route exact path="/portfolio">
+        <Route path="/portfolio">
           { currentUser ? <PortfolioPage /> : <Redirect to='/'/> }
         </Route>
-        <Route exact path="/search">
+        <Route path="/search">
           { currentUser ? <StockPage /> : <Redirect to='/'/> }
         </Route>
-        <Route exact path ="/">
+        <Route path ="/">
           { currentUser ? <PortfolioListings /> : <LandingPage /> }
         </Route>
       </Switch>
