@@ -42,8 +42,8 @@ export default function StockNewsListings({ news }) {
                         <i className="fas fa-chevron-right"></i>
                     </Button>
                 </Row>
-                </Container>
                 {renderArticles()}
+                </Container>
             </>
             :
             null

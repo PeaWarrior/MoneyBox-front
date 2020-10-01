@@ -8,6 +8,7 @@ export default function StockFundamental() {
     
     return (
         <Card.Body>
+            <Container>
             <h5>Fundamentals</h5>
             <Card>
                 <Card.Body>
@@ -71,6 +72,7 @@ export default function StockFundamental() {
                     </Container>
                 </Card.Body>
             </Card>
+            </Container>
         </Card.Body>
     )
 }

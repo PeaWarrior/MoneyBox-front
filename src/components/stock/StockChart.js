@@ -12,7 +12,7 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
     const { date, graphData } = useSelector(state => state.stockChart);
     const dispatch = useDispatch();
     
-    const [option, setOption] = useState('intraday');
+    const [option, setOption] = useState('week');
     const [lastTrade, setLastTrade] = useState({
         price: lastPrice,
         time: moment().format('hh:mm A')

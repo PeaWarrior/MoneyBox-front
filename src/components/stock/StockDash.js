@@ -10,7 +10,7 @@ export default function StockDash({ name, ticker, fundamental }) {
             <Row>
                 <Col md={8}>
                     <Container>
-                        <Row><h2 className='mb-0'>{name}</h2></Row>
+                        <Row><h1 className='mb-0'>{name}</h1></Row>
                     </Container>
                     <StockChart 
                         ticker={ticker} 

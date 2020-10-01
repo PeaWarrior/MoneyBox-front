@@ -14,7 +14,6 @@ export default function FundForm() {
         date: moment().format('YYYY-MM-DD')
     });
 
-    console.log(currentPortfolio)
     useEffect(() => {
         setForm({
             ...form,
@@ -39,9 +38,7 @@ export default function FundForm() {
         <Form className="buy-form pt-4 pb-3" onSubmit={handleSubmit}>
             <Container>
                 <Form.Group as={Col}>
-                    <Col>
-                        <h5>Banking</h5>
-                    </Col>
+                    <h5>Banking</h5>
                 </Form.Group>
                 <hr/>
 
