@@ -6,7 +6,7 @@ import { createAndFetchNewActivity } from './activityActions';
 
 export default function BuyForm({ ticker, name }) {
     const dispatch = useDispatch();
-    const { portfolios } = useSelector(state => state.portfolio);
+    const portfolios = useSelector(state => state.portfolio.portfolios);
     const stock = useSelector(state => state.stock.stock);
     const [form, setForm] = useState({
         portfolio_id: portfolios.length ? portfolios[0].id : null,
@@ -18,6 +18,7 @@ export default function BuyForm({ ticker, name }) {
         date: moment().format('YYYY-MM-DD')
     });
 
+    console.log(portfolios)
     useEffect(() => {
         setForm({
             ...form,

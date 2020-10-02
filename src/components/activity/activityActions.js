@@ -1,5 +1,6 @@
+import store from '../../store';
 import { createNewActivityRequest, sellActivityRequest } from '../../api';
-import { setCurrentPortfolio } from '../portfolio/portfolioActions';
+import { setCurrentPortfolio, updatePortfolios } from '../portfolio/portfolioActions';
 import { setStocks } from '../stock/stockActions';
 
 export const createAndFetchNewActivity = (form) => {
@@ -15,8 +16,16 @@ export const createAndFetchNewActivity = (form) => {
             .then(data => {
                 dispatch(setCurrentPortfolio(data.portfolio));
                 dispatch(setStocks(data.portfolio.stocks));
-                // dispatch(createActivity(data.activity));
                 dispatch(clearActivityForm());
+                const { portfolios } = store.getState().portfolio;
+                const updatedPortfolios = portfolios.map(portfolio => {
+                    if (portfolio.id === data.portfolio.id) {
+                        return data.portfolio
+                    } else {
+                        return portfolio
+                    }
+                });
+                dispatch(updatePortfolios(updatedPortfolios));
             })
         }
     }

@@ -63,4 +63,11 @@ export const updateCurrentPortfolioStocks = (stocks) => {
         type: 'UPDATE_CURRENT_PORTFOLIO_STOCKS',
         payload: stocks
     }
+};
+
+export const updatePortfolios = (portfolios) => {
+    return {
+        type: 'UPDATE_PORTFOLIOS',
+        payload: portfolios
+    }
 }
