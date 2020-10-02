@@ -18,10 +18,11 @@ export default function BuyForm({ ticker, name }) {
         date: moment().format('YYYY-MM-DD')
     });
 
-    console.log(portfolios)
     useEffect(() => {
         setForm({
             ...form,
+            name: stock.name,
+            ticker: stock.ticker,
             price: stock.fundamental.lastPrice
         })
     }, [stock])

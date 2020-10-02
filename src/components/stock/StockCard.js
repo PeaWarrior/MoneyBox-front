@@ -119,6 +119,7 @@ export default function StockCard({ id, name, ticker, shares, costBasis, average
                                                 currentPrice={currentPrice} 
                                                 ticker={ticker} 
                                                 name={name} 
+                                                shares={shares}
                                             />
                                         </>
                                         :

@@ -52,6 +52,7 @@ export default function StockSearch() {
                     value={query} 
                     placeholder="Search symbol" 
                     list="suggestions"
+                    className="search"
                 />
                 <datalist id="suggestions">
                     {renderSuggestions()}

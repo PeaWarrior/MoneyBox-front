@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Col } from 'react-bootstrap';
 import { Doughnut } from 'react-chartjs-2';
@@ -16,9 +16,10 @@ export default function PortfolioChart() {
             };
             stocks.forEach(stock => {
                 if (stock.shares > 0) {
+                    const costBasis = (Math.round(stock.costBasis*100)/100).toFixed(2);
                     colors.push(randomColorGenerator());
                     stocksData.names.push(stock.ticker);
-                    stocksData.prices.push(stock.costBasis);
+                    stocksData.prices.push(costBasis);
                 }
             });
             setData({
@@ -35,12 +36,22 @@ export default function PortfolioChart() {
         }
     }, [cash, stocks]);
 
+    const options = {
+        aspectRatio: 1,
+        legend: {
+            display: true,
+            labels: {
+                usePointStyle: false,
+                fontSize: 16,
+            }
+        },
+    };
+
+
     return (
         <>
-        <Col>
-        </Col>
-        <Col md={8}>
-            <Doughnut data={data} />
+        <Col md={10}>
+            <Doughnut style={{maxHeight: '300px'}} data={data} options={options} />
         </Col>
         </>
     )
