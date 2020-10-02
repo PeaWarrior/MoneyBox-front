@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Doughnut } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
+import { Col } from 'react-bootstrap';
+import { Doughnut } from 'react-chartjs-2';
 
 export default function PortfolioChart() {
     const { stocks, cash } = useSelector(state => state.portfolio.currentPortfolio);
@@ -35,7 +36,13 @@ export default function PortfolioChart() {
     }, [cash, stocks]);
 
     return (
-        <Doughnut data={data} />
+        <>
+        <Col>
+        </Col>
+        <Col md={8}>
+            <Doughnut data={data} />
+        </Col>
+        </>
     )
 };
 

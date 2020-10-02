@@ -1,7 +1,8 @@
 const defaultState = {
     stocks: [],
     stock: {},
-    quotes: {}
+    quotes: {},
+    stockSymbols: []
 }
 
 const reducer = (state = defaultState, action) => {
@@ -21,13 +22,18 @@ const reducer = (state = defaultState, action) => {
                 ...state,
                 quotes: {...action.payload}
             }
-        case 'UPDATE_TRANSACTIONS':
+        case 'SET_STOCK_SYMBOLS':
             return {
                 ...state,
-                stocks: [
-                    ...action.payload
-                ]
+                stockSymbols: [...action.payload]
             }
+        // case 'UPDATE_TRANSACTIONS':
+        //     return {
+        //         ...state,
+        //         stocks: [
+        //             ...action.payload
+        //         ]
+        //     }
         default:
             return state;
     }

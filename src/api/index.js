@@ -62,6 +62,15 @@ export const sellActivityRequest = (activityFormData) => {
 
 // STOCK REQUESTS
 
+export const getStockSymbolsRequest = () => {
+    return fetch(`${URL}stocks`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.token}`
+        }
+    })
+    .then(resp => resp.json())
+}
+
 export const getStockDataRequest = (query) => {
     return fetch(`${URL}stocks/${query}`, {
         headers: {

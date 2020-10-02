@@ -8,7 +8,7 @@ export default function FundCard({ id, category, amount, date }) {
         <ListGroup className="d-flex justify-content-between">
             <ListGroup.Item>
                 <Row>
-                    <Col>{Moment(date).format('YYYY-MM-DD')}</Col>
+                    <Col>{Moment(date).format('M/D/YYYY')}</Col>
                     <Col>{category}</Col>
                     <Col>{category === 'Deposit' ? '+' : '-'}${amount.toFixed(2)}</Col>
                 </Row>

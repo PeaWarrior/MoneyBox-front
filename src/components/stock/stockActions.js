@@ -1,4 +1,13 @@
-import { getStockDataRequest, getStockQuotesRequest } from '../../api';
+import { getStockDataRequest, getStockQuotesRequest, getStockSymbolsRequest } from '../../api';
+
+export const fetchStockSymbols = () => {
+    return function(dispatch) {
+        getStockSymbolsRequest()
+        .then(data => {
+            dispatch(setStockSymbols(data));
+        })
+    }
+};
 
 export const fetchStockData = query => {
     return function(dispatch) {
@@ -38,6 +47,13 @@ export const setStock = (stock) => {
         payload: stock
     }
 };
+
+export const setStockSymbols = (stockSymbols) => {
+    return {
+        type: 'SET_STOCK_SYMBOLS',
+        payload: stockSymbols
+    }
+}
 
 // UTILITY
 

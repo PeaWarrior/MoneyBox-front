@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
+import moment from 'moment';
 
 export default function ActivityCard ({ id, ticker, category, price, shares, date }) {
     
@@ -10,7 +11,7 @@ export default function ActivityCard ({ id, ticker, category, price, shares, dat
             <Row>
                 <Col>
                     <h6>{ticker}: {category}</h6>
-                    <small>{date}</small>
+                    <small>{moment(date).format('M/D/YYYY')}</small>
                 </Col>
                 <Col>
                     <small>Shares</small>

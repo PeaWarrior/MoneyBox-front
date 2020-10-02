@@ -6,6 +6,10 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+input::-webkit-calendar-picker-indicator {
+    display: none;
+  }
+
 body {
     font-family: 'Montserrat', sans-serif;
 }

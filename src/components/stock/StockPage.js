@@ -1,13 +1,21 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Container, Card } from 'react-bootstrap';
 import StockSearch from './StockSearch';
 import StockDash from './StockDash';
 import StockFundamental from './StockFundamental';
 import StockNewsListings from './StockNewsListings';
+import { fetchStockSymbols } from './stockActions';
 
 export default function StockPage() {
-    const stock = useSelector(state => state.stock.stock);
+    const dispatch = useDispatch();
+    const { stock, stockSymbols } = useSelector(state => state.stock);
+
+    useEffect(() => {
+        if (stockSymbols.length <= 0) {
+            dispatch(fetchStockSymbols());
+        }
+    }, [stockSymbols])
 
     return (
         <Container>
