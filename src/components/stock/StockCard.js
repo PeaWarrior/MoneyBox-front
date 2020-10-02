@@ -4,12 +4,14 @@ import { Accordion, Card, Container, Row, Col, Button } from 'react-bootstrap';
 import ActivityCard from '../activity/ActivityCard';
 import { calculateChange } from './stockActions';
 import ActivityForm from '../activity/ActivityForm';
+import { setCurrentPortfolio } from '../portfolio/portfolioActions';
 
 export default function StockCard({ id, name, ticker, shares, costBasis, average_price, realized, activities, lastTrade, lastPrice, openPrice }) {
     const dispatch = useDispatch();
     const [currentPrice, setCurrentPrice] = useState(lastPrice);
     const [currentChange, setCurrentChange] = useState({});
     const [currentStockPrice, setCurrentStockPrice] = useState({});
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         if (lastTrade) {
@@ -32,9 +34,18 @@ export default function StockCard({ id, name, ticker, shares, costBasis, average
     }, [currentPrice, dispatch, openPrice]);
 
     const renderTransactions = () => {
-        return activities.map(activity => (
+        const currentActivities = activities.slice(((currentPage-1)*4), (currentPage*4))
+        return currentActivities.map(activity => (
             <ActivityCard key={activity.id} ticker={ticker} {...activity} />
         ))
+    };
+
+    const handleClickIncrementPage = event => {
+        setCurrentPage(currentPage+1)
+    };
+
+    const handleClickDecrementPage = event => {
+        setCurrentPage(currentPage-1)
     };
 
     return (
@@ -119,13 +130,28 @@ export default function StockCard({ id, name, ticker, shares, costBasis, average
                     </Container>
                 </Card.Header>
 
-                <Accordion.Collapse eventKey="0">
-                    <Card.Body>
-                        <Card.Title>Transactions</Card.Title>
-                        {renderTransactions()}
-                    </Card.Body>
-                </Accordion.Collapse>
-                
+                <Card.Body>
+                    <Row>
+                        <Col>
+                            <Card.Title>Transactions</Card.Title>
+                        </Col>
+                        <Button 
+                            variant="link"
+                            disabled={currentPage === 1 ? true : false}
+                            onClick={handleClickDecrementPage}
+                        >
+                            {<i className="fas fa-chevron-left"></i>}
+                        </Button>
+                        <Button 
+                            variant="link"
+                            disabled={activities.length <= currentPage * 4 ? true : false}
+                            onClick={handleClickIncrementPage}
+                        >
+                            <i className="fas fa-chevron-right"></i>
+                        </Button>
+                    </Row>
+                    {renderTransactions()}
+                </Card.Body>
             </Card>
         </Accordion>
     )

@@ -28,6 +28,10 @@ export default function BuyForm({ ticker, name }) {
     const handleClickAddActivity = event => {
         event.preventDefault();
         dispatch(createAndFetchNewActivity(form));
+        setForm({
+            ...form,
+            shares: 0
+        })
     };
 
     const handleChange = event => {

@@ -13,7 +13,9 @@ export const createAndFetchNewActivity = (form) => {
         } else {
             createNewActivityRequest(form)
             .then(data => {
-                dispatch(createActivity(data.activity));
+                dispatch(setCurrentPortfolio(data.portfolio));
+                dispatch(setStocks(data.portfolio.stocks));
+                // dispatch(createActivity(data.activity));
                 dispatch(clearActivityForm());
             })
         }

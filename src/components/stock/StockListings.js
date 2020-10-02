@@ -50,12 +50,15 @@ export default function StockListings() {
     }, [stocks]);
 
     const renderStocks = () => {
-        const stocksWithShares = stocks.map(stock => {
-            if (stock.shares > 0) {
-                return <StockCard key={stock.id} {...quotes[stock.ticker]} lastTrade={lastTrade[stock.ticker]} {...stock} />
-            } else return null
+        const stocksWithShares = stocks.filter(stock => {
+            return stock.shares > 0 ? true : false
         });
-        return stocksWithShares.length > 0 ? stocksWithShares : <>No current positions</>
+
+        const stocksArray = stocksWithShares.map(stock => {
+            return <StockCard key={stock.id} {...quotes[stock.ticker]} lastTrade={lastTrade[stock.ticker]} {...stock} />
+        });
+
+        return stocksArray.length > 0 ? stocksArray : <h4>No current positions.</h4>
     }
 
     return (
