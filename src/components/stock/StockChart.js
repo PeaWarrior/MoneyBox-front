@@ -12,7 +12,7 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
     const { date, graphData } = useSelector(state => state.stockChart);
     const dispatch = useDispatch();
     
-    const [option, setOption] = useState('week');
+    const [option, setOption] = useState('intraday');
     const [lastTrade, setLastTrade] = useState({
         price: lastPrice,
         time: moment().format('hh:mm A')
@@ -55,7 +55,11 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
     }, [option, ticker, openPrice, dispatch]);
 
     useEffect(() => {
-        if (ticker && moment().hour() < 16) {
+        const currentTime = moment().unix();
+        // const openTime = moment().hour(9).minute(30).unix();
+        // const closeTime = moment().hour(16).minute(0).unix();
+        // && currentTime > openTime && currentTime > closeTime
+        if (ticker) {
             ws.current = new WebSocket(`wss://ws.finnhub.io?token=${process.env.REACT_APP_FINNHUBB_API_KEY}`);
 
             ws.current.addEventListener('open', function (event) {
@@ -128,7 +132,7 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
     }, [lastTrade.time, option, dispatch])
 
     useEffect(() => {
-        const price = display.price ? display.price : lastTrade.price
+        const price = display.price ? display.price : lastTrade.price;
         setCurrentChange(dispatch(calculateChange(price, graphData.datasets[0].data[0])));
     }, [display.price, graphData.datasets, dispatch]);
 
