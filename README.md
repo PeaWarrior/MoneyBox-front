@@ -21,6 +21,24 @@ Money Box is a web application designed to help you track and manage your stock 
     ```console
     $ brew install node
     ```
+### Initial Configuration
+In order to take advantage of all features of **Money Box**, you must secure your own API key for the following API.
+
+1. Register for developer API key for the following:
+    * [Finnhub](https://finnhub.io/)
+
+2. Create a new `.env` file in the root directory of this project.
+
+    ```console
+    $ touch .env
+    ```
+
+3. Add the API key to your `.env` file by copying the following and replacing the `<...>` with the corrent corresponding key.
+
+    ```env
+    FINNHUB_API_KEY=<FINNHUB API KEY HERE>
+    ```
+4. Remember to add the `.env` file to your `.gitignore`.
 
 ### Starting the frontend server
 1. Clone this repository and `cd` into the directory
