@@ -57,9 +57,10 @@ Money Box is a web application designed to help you track and manage your stock 
 * [React Router](https://reacttraining.com/react-router/web/guides/quick-start)
 * [MomentJS](https://momentjs.com/)
 * [Chart.js](https://github.com/jerairrest/react-chartjs-2)
+* [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
 * [IEX API](https://iexcloud.io/)
 * [Finnhub API](https://finnhub.io/)
-* [TD Ameritrade API](https://developer.tdameritrade.com/apis)
+* [TD Ameritrade API](https://developer.tdameritrade.com/)
 
 ## License
 
