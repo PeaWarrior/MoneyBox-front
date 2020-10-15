@@ -75,7 +75,7 @@ In order to take advantage of all features of **Money Box**, you must secure you
 * Search any stocks that are actively trading through the NYSE by their symbol or company name
 * View real time trade data and historical data
 
-![Fundamentals](./images/fundamentals.png)
+![Fundamentals](./images/Fundamentals.png)
 * View fundamental stock data
 * View recent stock news
 
