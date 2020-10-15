@@ -58,7 +58,7 @@ export default function BuyForm({ ticker, name }) {
 
     const renderRemainingCash = () => {
         const portfolio = portfolios.find((portfolio => portfolio.id === parseInt(form.portfolio_id)));
-        return portfolio.cash - form.price * form.shares
+        return portfolio.cash - (form.price * form.shares)
     };
 
     const portfolioCash = () => {

@@ -55,7 +55,7 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
     }, [option, ticker, openPrice, dispatch]);
 
     useEffect(() => {
-        const currentTime = moment().unix();
+        // const currentTime = moment().unix();
         // const openTime = moment().hour(9).minute(30).unix();
         // const closeTime = moment().hour(16).minute(0).unix();
         // && currentTime > openTime && currentTime > closeTime
@@ -75,7 +75,6 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
     useEffect(() => {
         if (ws.current) {
             let mostRecentTrade;
-    
             ws.current.addEventListener('message', function (event) {
                 const message = JSON.parse(event.data);
                 if (message.type === 'trade') {
@@ -87,6 +86,7 @@ export default function StockChart({ ticker, openPrice, lastPrice }) {
             });
 
             const interval = setInterval(() => {
+                console.log('hi')
                 if (mostRecentTrade) {
                     setLastTrade(mostRecentTrade);
                 }

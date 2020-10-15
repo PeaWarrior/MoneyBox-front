@@ -31,6 +31,10 @@ export default function FundForm() {
 
     const handleSubmit = event => {
         event.preventDefault();
+        setForm(prevState => ({
+            ...prevState,
+            amount: 0
+        }))
         dispatch(createFund(form));
     };
 

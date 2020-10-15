@@ -146,7 +146,7 @@ export default function ActivityForm({ category, currentPrice, ticker, name, sha
                             Close
                         </Button>
                         <Button 
-                            variant="primary" 
+                            variant="info" 
                             type="submit" 
                             disabled={checkDisabled()}
                         >

@@ -44,6 +44,9 @@ export default function StockListings() {
         }, 1000);
 
         return () => {
+            stocks.forEach(stock => {
+                socket.send(JSON.stringify({'type':'unsubscribe','symbol': stock.ticker}))
+            })
             socket.close();
             clearInterval(interval);
         }
