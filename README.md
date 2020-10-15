@@ -33,7 +33,7 @@ In order to take advantage of all features of **Money Box**, you must secure you
     $ touch .env
     ```
 
-3. Add the API key to your `.env` file by copying the following and replacing the `<...>` with the corrent corresponding key.
+3. Add the API key to your `.env` file by copying the following and replacing the `<...>` with the correct corresponding key.
 
     ```env
     FINNHUB_API_KEY=<FINNHUB API KEY HERE>
