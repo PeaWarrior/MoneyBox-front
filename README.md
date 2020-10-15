@@ -56,7 +56,28 @@ In order to take advantage of all features of **Money Box**, you must secure you
 
 ## Features
 
-[EDIT THIS]
+### Banking
+![Banking](./images/Banking.png)
+* Deposit or withdraw to your portfolio
+* View all banking transactions
+
+### Visualize Stock Positions
+
+![Doughnut Chart](https://media0.giphy.com/media/aD31XcKH2b4w8TPy2U/giphy.gif)
+* Visually compare stock positions through doughnut chart
+* Hide symbols for specific comparisons
+
+![Stock Positions](https://media2.giphy.com/media/r11hIuskqVXKHrucsA/giphy.gif)
+* View all stock positions and transactions
+
+### Search Stocks
+![Stock Chart](https://media2.giphy.com/media/iWkRoqg06yddD9qXQa/giphy.gif)
+* Search any stocks that are actively trading through the NYSE by their symbol or company name
+* View real time trade data and historical data
+
+![Fundamenals](./images/fundamentals.png)
+* View fundamental stock data
+* View recent stock news
 
 ## Tech Stack
 * React.js
