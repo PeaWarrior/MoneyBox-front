@@ -4,6 +4,8 @@
 
 Money Box is a web application designed to help you track and manage your stock portfolios all in one place. Equipped with real-time trade data, news and historical stock data, managing your portfolios just got easier.
 
+Watch the **[Demo](https://youtu.be/mr8TnVePpUI)**.
+
 ## Table of Contents
 * [Getting Started](#getting-started)
 * [Features](#features)
